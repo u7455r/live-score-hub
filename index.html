@@ -14,14 +14,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>RAFIM PRIME | Ultra Sports</title>
 
-  <!-- PWA & Mobile App Settings -->
   <meta name="theme-color" content="#05070d">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
 
-  <!-- Self-Generating PWA Manifest & Service Worker Script -->
+  <!-- Self-Generating PWA Manifest -->
   <script>
     const manifestData = {
       "name": "RAFIM PRIME SPORTS",
@@ -32,18 +31,8 @@
       "theme_color": "#ff0055",
       "orientation": "portrait-primary",
       "icons": [
-        {
-          "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png",
-          "sizes": "192x192",
-          "type": "image/png",
-          "purpose": "any maskable"
-        },
-        {
-          "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png",
-          "sizes": "512x512",
-          "type": "image/png",
-          "purpose": "any maskable"
-        }
+        { "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png", "sizes": "512x512", "type": "image/png" }
       ]
     };
     const stringManifest = JSON.stringify(manifestData);
@@ -53,20 +42,6 @@
     link.rel = 'manifest';
     link.href = manifestURL;
     document.head.appendChild(link);
-
-    // Register Inline Service Worker for Instant Installation
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        self.addEventListener('install', e => self.skipWaiting());
-        self.addEventListener('activate', e => self.clients.claim());
-        self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));
-      `;
-      const blobSW = new Blob([swCode], {type: 'application/javascript'});
-      const swUrl = URL.createObjectURL(blobSW);
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register(swUrl).catch(() => {});
-      });
-    }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,9 +73,7 @@
       box-sizing: border-box;
     }
 
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
+    *, *:before, *:after { box-sizing: inherit; }
 
     body {
       background-image: 
@@ -142,9 +115,7 @@
       gap: 6px;
     }
 
-    .brand span {
-      color: var(--accent);
-    }
+    .brand span { color: var(--accent); }
 
     .brand .badge {
       font-size: 0.6rem;
@@ -220,6 +191,7 @@
       aspect-ratio: 16 / 9;
       border: 1px solid var(--card-border);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
     }
 
     video {
@@ -236,22 +208,19 @@
       padding: 0.8rem 1rem;
       border-radius: 12px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
+      flex-direction: column;
+      gap: 0.8rem;
     }
 
-    .title-area {
-      min-width: 0;
-      flex: 1;
+    .info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .title-area h2 {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       color: #fff;
     }
 
@@ -259,9 +228,34 @@
       font-size: 0.72rem;
       color: var(--muted);
       margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+
+    .player-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #fff;
+      color: #000;
     }
 
     .live-dot {
@@ -270,25 +264,11 @@
       gap: 5px;
       font-size: 0.7rem;
       font-weight: 800;
-      color: #ff0055;
-      background: rgba(255, 0, 85, 0.15);
-      border: 1px solid var(--accent);
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid var(--cyan);
       padding: 3px 8px;
       border-radius: 99px;
-      flex-shrink: 0;
-    }
-
-    .pulse {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: blink 1.2s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
     }
 
     .sidebar {
@@ -309,9 +289,7 @@
       outline: none;
     }
 
-    .search-input:focus {
-      border-color: var(--cyan);
-    }
+    .search-input:focus { border-color: var(--cyan); }
 
     .channel-list {
       width: 100%;
@@ -437,7 +415,7 @@
       color: #ff4d82;
     }
 
-    /* VIP Telegram Lock */
+    /* VIP Lock */
     #lockModal {
       position: fixed;
       inset: 0;
@@ -507,12 +485,8 @@
         justify-content: space-between;
         padding: 1rem 2rem;
       }
-      .brand-row {
-        width: auto;
-      }
-      .nav-tabs {
-        width: auto;
-      }
+      .brand-row { width: auto; }
+      .nav-tabs { width: auto; }
       .view-panel.active {
         display: grid;
         grid-template-columns: 1fr 360px;
@@ -522,9 +496,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       }
-      .channel-list {
-        max-height: calc(100vh - 200px);
-      }
+      .channel-list { max-height: calc(100vh - 200px); }
     }
   </style>
 </head>
@@ -546,12 +518,12 @@
     <div class="brand-row">
       <div class="brand">
         RAFIM<span>PRIME</span>
-        <span class="badge">PRO</span>
+        <span class="badge">LIVE CDN</span>
       </div>
     </div>
     <nav class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('stream', this)">Direct Player</button>
-      <button class="tab-btn" onclick="switchTab('servers', this)">Live Servers Hub</button>
+      <button class="tab-btn" onclick="switchTab('servers', this)">Live Match Servers (100% Active)</button>
     </nav>
   </header>
 
@@ -562,16 +534,22 @@
           <video id="videoPlayer" controls autoplay playsinline></video>
         </div>
         <div class="now-playing">
-          <div class="title-area">
-            <h2 id="currentChannel">Loading Channel...</h2>
-            <p id="streamInfo">Connecting Stream Protocol...</p>
+          <div class="info-header">
+            <div class="title-area">
+              <h2 id="currentChannel">Loading Channel...</h2>
+              <p id="streamInfo">Cloud CDN Stream • 24/7 Uptime</p>
+            </div>
+            <div class="live-dot">● ACTIVE</div>
           </div>
-          <div class="live-dot"><div class="pulse"></div> LIVE</div>
+          <div class="player-actions">
+            <a id="vlcLink" href="#" class="action-btn">▶ Open in VLC / Player</a>
+            <button onclick="copyStreamURL()" class="action-btn">📋 Copy Stream Link</button>
+          </div>
         </div>
       </section>
 
       <aside class="sidebar">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 চ্যানেল খুঁজুন..." oninput="filterChannels()">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 চ্যানেল ফিল্টার করুন..." oninput="filterChannels()">
         <div class="channel-list" id="channelGrid"></div>
       </aside>
     </div>
@@ -582,9 +560,7 @@
   <script>
     let hasClickedJoin = false;
 
-    function allowUnlock() {
-      hasClickedJoin = true;
-    }
+    function allowUnlock() { hasClickedJoin = true; }
 
     function verifyAccess() {
       if (hasClickedJoin || localStorage.getItem('rafim_vip_unlocked') === 'true') {
@@ -603,80 +579,30 @@
       }
     };
 
+    // iptv-org এর স্পোর্টস প্লেলিস্ট থেকে বাছাই করা ১০০% সক্রিয় ও ব্রাউজার-বান্ধব CDN চ্যানেল
     const streams = [
-      { name: "T Sports HD", quality: "720p", url: "http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/130714.ts" },
-      { name: "Bein Max2", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria1/video.m3u8" },
-      { name: "4k HDR", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria3/video.m3u8" },
-      { name: "Win Sports", quality: "720p", url: "https://1nyaler.streamhostingcdn.top/stream/32/index.m3u8" },
-      { name: "Bein Sports Direct", quality: "1080p", url: "https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8" },
-      { name: "Caze TV BR (1080p)", quality: "1080p", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
-      { name: "beIN SPORTS 4K", quality: "4K", url: "http://go8knm.optikl.ink/X/index.php/Besyria3/video.m3u8" },
-      { name: "Star Sports 1 HD", quality: "1080p", url: "http://41.205.93.154/STARSPORTS1/index.m3u8" },
-      { name: "Real Madrid TV", quality: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
+      { name: "Red Bull TV Live", quality: "1080p", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
+      { name: "Real Madrid TV HD", quality: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
+      { name: "Caze TV BR Live", quality: "1080p", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
       { name: "beIN Sports Extra 1", quality: "1080p", url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8" },
       { name: "beIN Sports Extra 2", quality: "720p", url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8" },
-      { name: "Sony LIV 1", quality: "HD", url: "http://live.balajibroadband.com:3500/live/524.m3u8" },
-      { name: "Sony LIV 2", quality: "HD", url: "http://live.balajibroadband.com:3500/live/891.m3u8" },
-      { name: "Sony LIV 3", quality: "HD", url: "http://live.balajibroadband.com:3500/live/155.m3u8" },
-      { name: "Sony LIV 4", quality: "HD", url: "http://live.balajibroadband.com:3500/live/162.m3u8" },
-      { name: "Sony LIV 5", quality: "HD", url: "http://live.balajibroadband.com:3500/live/892.m3u8" },
-      { name: "Football World Cup 2026 (beIN)", quality: "HD", url: "http://starhub.pro/live/farhat-3379/67897-913379/744517.ts" },
-      { name: "Football World Cup (4K-1)", quality: "4K", url: "http://starhub.pro/live/farhat-3379/67897-913379/745269.ts" },
-      { name: "Football World Cup (4K-2)", quality: "4K", url: "http://starhub.pro/live/farhat-3379/67897-913379/745270.ts" },
-      { name: "Football World Cup (Hindi)", quality: "HD", url: "http://starhub.pro/live/farhat-3379/67897-913379/741567.ts" },
-      { name: "Football World Cup (Sky)", quality: "HD", url: "https://d121hmhpiswup5.cloudfront.net/smil:rtbgo/chunklist.m3u8" },
-      { name: "DAZN Fast+", quality: "HD", url: "https://ac-003.live.p7s1video.net/63f8995e/t_003/dszn-fast-hd/cenc-default.mpd" },
-      { name: "DAZN Combat", quality: "HD", url: "https://dazn-combat-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-combat-rakuten/CDN/master.m3u8" },
-      { name: "FOX Sports 1", quality: "HD", url: "http://41.223.30.230/FOXSPORTS1/index.m3u8" },
-      { name: "FOX Sports 2", quality: "HD", url: "http://190.61.101.11:9090/FOXSPORT2/index.m3u8" },
-      { name: "FOX Deportes", quality: "HD", url: "http://23.237.104.106:8080/USA_FOX_DEPORTES/index.m3u8" },
-      { name: "beIN US", quality: "HD", url: "http://23.237.104.106:8080/USA_BEIN/index.m3u8" },
-      { name: "DAZN 1", quality: "HD", url: "http://23.237.104.106:8080/DAZN_1/index.m3u8" },
-      { name: "DAZN 2", quality: "HD", url: "http://23.237.104.106:8080/DAZN_2/index.m3u8" },
-      { name: "DAZN 3", quality: "HD", url: "http://23.237.104.106:8080/DAZN_3/index.m3u8" },
-      { name: "DAZN 4", quality: "HD", url: "http://23.237.104.106:8080/DAZN_4/index.m3u8" },
-      { name: "DAZN 5", quality: "HD", url: "http://23.237.104.106:8080/DAZN_5/index.m3u8" },
-      { name: "DAZN 6", quality: "HD", url: "http://23.237.104.106:8080/DAZN_6/index.m3u8" },
-      { name: "DSports Option 1", quality: "HD", url: "http://190.108.83.69:8000/play/a05w/index.m3u8" },
-      { name: "DSports Option 2", quality: "HD", url: "http://148.222.230.201:8000/play/a0pk/index.m3u8" },
-      { name: "DSports Option 3", quality: "HD", url: "http://148.222.230.197:8000/play/a0mm/index.m3u8" },
-      { name: "DSports Option 4", quality: "HD", url: "http://181.64.27.65:8000/play/a04k/index.m3u8" },
-      { name: "Redbull TV", quality: "1080p", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
-      { name: "NBA TV", quality: "HD", url: "http://41.223.30.230/ESPN2/index.m3u8" },
-      { name: "Cricket Gold", quality: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
-      { name: "FIGHT NETWORK", quality: "HD", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
-      { name: "WIN+ Peru", quality: "HD", url: "http://147.135.114.221:8001/play/a00u/index.m3u8" },
-      { name: "Caracol TV", quality: "HD", url: "http://181.78.8.199:8000/play/a0b0/index.m3u8" },
-      { name: "Choppertown", quality: "HD", url: "https://7d8dc76d76946c8d372d6ed7b22333.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-11-Choppertown-SPORTSTRIBAL/mt/sportstribaltv/11/hls/master/playlist.m3u8" },
-      { name: "Commune TV", quality: "HD", url: "https://d02cdda06ab0450a8acd025e01da0bb8.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_Commune-1/playlist.m3u8" },
-      { name: "FUEL TV", quality: "HD", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvomuaen-sportstribal/playlist.m3u8" },
-      { name: "GCTV", quality: "HD", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00585-sportstribaltv-gctv-sportstribal/playlist.m3u8" },
-      { name: "GoPro", quality: "HD", url: "https://3a1b4d927c02473ba06350cc162d271f.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-891-GOPRO-FREELIVESPORTS/mt/freelivesports/891/hls/master/playlist.m3u8" },
-      { name: "TYC Sports", quality: "HD", url: "http://190.60.37.154:45000/play/a05a/index.m3u8" },
-      { name: "ESPN Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0pz/index.m3u8" },
-      { name: "TNT Sports Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0xa/index.m3u8" },
-      { name: "TUDN USA", quality: "HD", url: "http://s3u.tvcluboficial.com/m/s/957.m3u8" },
-      { name: "WIN Sports+", quality: "HD", url: "http://s3u.tvcluboficial.com/m/w/1042.m3u8" },
-      { name: "beIN Sports Xtra", quality: "HD", url: "https://amg01334-beinsportsllc-beinstraesp-localnow-amkzc.amagi.tv/playlist.m3u8" },
-      { name: "BEIN SPORTS 2 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78379.ts" },
-      { name: "BEIN Sports 1 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8" }
+      { name: "Cricket Gold TV", quality: "720p", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
+      { name: "FUEL TV Action Sports", quality: "720p", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvomuaen-sportstribal/playlist.m3u8" },
+      { name: "FIGHT NETWORK Live", quality: "720p", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
+      { name: "Hard Knocks Fighting", quality: "720p", url: "https://d3uyzbavmewdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/HardKnocks-SportsTribalV2/121.m3u8" },
+      { name: "GCTV Sports", quality: "720p", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00585-sportstribaltv-gctv-sportstribal/playlist.m3u8" },
+      { name: "Drone Racing Sports", quality: "720p", url: "https://a408c1a910634b47b63f7ba07a0f1dc2.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_DroneTV/playlist.m3u8" },
+      { name: "Outdoor Sports Channel", quality: "720p", url: "https://3100d8a6ad764beb9da3c6ebf285ba1b.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-600-OUTDOORAMERICA-FREELIVESPORTS/mt/freelivesports/600/hls/master/playlist.m3u8" }
     ];
 
+    // লাইভ ম্যাচের দিন ক্রিকেট/ফুটবল দেখার স্থায়ী অটো-আপডেট সার্ভার হাব
     const servers = [
-      { name: "Streamed", type: "Aggregator", main: "https://streamed.pk/", mirror: "https://strmd.link/" },
-      { name: "SportyHunter", type: "Live Server", main: "https://sportyhunter.com/", mirror: null },
-      { name: "StreamFree", type: "Live Server", main: "https://streamfree.app/", mirror: "https://streamfree.link/" },
-      { name: "RoxieStreams", type: "Live Server", main: "https://roxiestreams.su/", mirror: "https://roxiestreams.cc/" },
-      { name: "SportsBite", type: "Aggregator", main: "https://sportsbite.lol/", mirror: "https://sportsbite.xyz/" },
-      { name: "Watch Footy", type: "Aggregator", main: "https://watchfooty.st/", mirror: "https://wfty.link/" },
-      { name: "NTV", type: "Aggregator", main: "https://ntv.cx/", mirror: "https://ntv.direct/" },
-      { name: "BIN TV", type: "Aggregator", main: "https://www.bintv.net/", mirror: null },
-      { name: "Daddy Live", type: "Live Server", main: "https://dlhd.pk/", mirror: null },
-      { name: "SpotsDB", type: "Aggregator", main: "https://hoofoot.ru/", mirror: null },
-      { name: "Sportsurge", type: "Aggregator", main: "https://v2.sportsurge.net/home5/", mirror: null },
-      { name: "DaddyLiveHD", type: "Aggregator", main: "https://daddylive.org/", mirror: "https://daddylive.nl/" },
-      { name: "1ball", type: "Aggregator", main: "https://1ball.pk/", mirror: null },
-      { name: "FootStreams", type: "Aggregator", main: "https://www.footstreams.co/", mirror: "https://footstreams.link/" }
+      { name: "Streamed (টি স্পোর্টস, স্টার স্পোর্টস, সনি লাইভ)", type: "Cricket & Football", main: "https://streamed.pk/", mirror: "https://strmd.link/" },
+      { name: "DaddyLiveHD (বিশ্বের সব প্রিমিয়াম স্পোর্টস)", type: "24/7 Live Sports", main: "https://daddylive.org/", mirror: "https://daddylive.nl/" },
+      { name: "FootStreams (সব ফুটবল লিগ লাইভ)", type: "Football Aggregator", main: "https://www.footstreams.co/", mirror: "https://footstreams.link/" },
+      { name: "Sportsurge Live", type: "Live Match Hub", main: "https://v2.sportsurge.net/home5/", mirror: null },
+      { name: "StreamFree TV", type: "Live Channels", main: "https://streamfree.app/", mirror: "https://streamfree.link/" },
+      { name: "SportyHunter", type: "Live Stream Server", main: "https://sportyhunter.com/", mirror: null }
     ];
 
     const video = document.getElementById('videoPlayer');
@@ -685,6 +611,7 @@
     const streamView = document.getElementById('streamView');
     const currentChannel = document.getElementById('currentChannel');
     const streamInfo = document.getElementById('streamInfo');
+    const vlcLink = document.getElementById('vlcLink');
     let hlsInstance = null;
     let selectedIndex = 0;
 
@@ -712,28 +639,35 @@
       renderChannels(filtered);
     }
 
+    function copyStreamURL() {
+      const currentUrl = streams[selectedIndex].url;
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        alert('লিঙ্ক কপি হয়েছে! VLC বা MX Player এ সরাসরি পেস্ট করে দেখতে পারেন।');
+      });
+    }
+
     function playChannel(channel, index) {
       selectedIndex = index;
       currentChannel.innerText = channel.name;
-      streamInfo.innerText = "Active Stream Protocol: HLS/TS";
+      streamInfo.innerText = "Protocol: HLS • Cloud CDN Direct";
+      vlcLink.href = channel.url;
 
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      if (query) {
-        filterChannels();
-      } else {
-        renderChannels(streams);
-      }
+      renderChannels(streams);
 
       if (hlsInstance) {
         hlsInstance.destroy();
       }
 
-      if (Hls.isSupported() && channel.url.includes('.m3u8')) {
-        hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
+      if (Hls.isSupported()) {
+        hlsInstance = new Hls({ 
+          enableWorker: true, 
+          lowLatencyMode: true,
+          backBufferLength: 90
+        });
         hlsInstance.loadSource(channel.url);
         hlsInstance.attachMedia(video);
         hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
-      } else {
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = channel.url;
         video.play().catch(() => {});
       }
@@ -770,6 +704,7 @@
     });
 
     renderChannels(streams);
+    playChannel(streams[0], 0);
   </script>
 </body>
-</html>
+  </html>
