@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rafim Live | Sports Arena & Global Hub</title>
+  <title>RAFIM PRIME | Ultra-Low Latency Sports Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: rgba(255, 255, 255, 0.04);
+      --bg: #05070d;
+      --card-bg: rgba(13, 17, 28, 0.7);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent: #ff0055;
-      --accent-glow: rgba(255, 0, 85, 0.4);
+      --accent-glow: rgba(255, 0, 85, 0.5);
       --cyan: #00f2fe;
-      --cyan-glow: rgba(0, 242, 254, 0.2);
+      --cyan-glow: rgba(0, 242, 254, 0.4);
+      --telegram: #229ED9;
       --text: #f3f4f6;
-      --muted: #9ca3af;
+      --muted: #94a3b8;
     }
 
     * {
@@ -29,42 +30,62 @@
 
     body {
       background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 0, 85, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 242, 254, 0.08) 0px, transparent 50%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
+    /* Ambient Header */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 2rem;
+      padding: 1.2rem 2.5rem;
       border-bottom: 1px solid var(--card-border);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(20px);
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 9, 14, 0.85);
+      background: rgba(5, 7, 13, 0.85);
     }
 
     .brand {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .brand span {
-      color: var(--accent);
+      background: linear-gradient(135deg, #ff0055, #ff5e00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand .badge {
+      font-size: 0.65rem;
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .nav-tabs {
       display: flex;
       gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 4px;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 5px;
+      border-radius: 14px;
       border: 1px solid var(--card-border);
     }
 
@@ -72,23 +93,23 @@
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: 700;
       font-size: 0.85rem;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .tab-btn.active {
-      background: var(--accent);
+      background: linear-gradient(135deg, #ff0055, #ff3366);
       color: #fff;
-      box-shadow: 0 0 12px var(--accent-glow);
+      box-shadow: 0 4px 20px var(--accent-glow);
     }
 
     main {
       flex: 1;
-      max-width: 1600px;
+      max-width: 1650px;
       margin: 0 auto;
       width: 100%;
       padding: 2rem;
@@ -102,32 +123,33 @@
       display: grid;
     }
 
-    /* Stream Section */
+    /* Player View */
     #streamView {
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 390px;
       gap: 2rem;
     }
 
     .player-section {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .video-container {
       position: relative;
       background: #000;
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
       aspect-ratio: 16 / 9;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-      border: 1px solid var(--card-border);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(255, 0, 85, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     video {
       width: 100%;
       height: 100%;
       display: block;
+      object-fit: contain;
     }
 
     .now-playing {
@@ -136,62 +158,99 @@
       align-items: center;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      padding: 1.25rem 1.5rem;
-      border-radius: 14px;
+      padding: 1.25rem 1.8rem;
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
     }
 
     .title-area h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
     }
 
     .title-area p {
       font-size: 0.85rem;
       color: var(--muted);
       margin-top: 4px;
-      word-break: break-all;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Channel List Sidebar */
+    .player-stat {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .live-dot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #ff0055;
+      background: rgba(255, 0, 85, 0.15);
+      border: 1px solid var(--accent);
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: blink 1.2s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    /* Channels Sidebar */
     .sidebar {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      height: calc(100vh - 150px);
+      gap: 1.2rem;
+      height: calc(100vh - 160px);
       position: sticky;
-      top: 100px;
+      top: 105px;
     }
 
     .search-input {
       width: 100%;
-      padding: 0.8rem 1rem;
+      padding: 1rem 1.2rem;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 10px;
+      border-radius: 14px;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.3s;
+      backdrop-filter: blur(12px);
     }
 
     .search-input:focus {
-      border-color: var(--accent);
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px var(--cyan-glow);
     }
 
     .channel-list {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.7rem;
       overflow-y: auto;
-      padding-right: 4px;
+      padding-right: 6px;
     }
 
     .channel-list::-webkit-scrollbar {
       width: 5px;
     }
     .channel-list::-webkit-scrollbar-thumb {
-      background: var(--card-border);
-      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
     }
 
     .channel-card {
@@ -200,33 +259,35 @@
       justify-content: space-between;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
     }
 
     .channel-card:hover {
       background: rgba(255, 255, 255, 0.08);
       transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .channel-card.active {
       border-color: var(--accent);
-      background: rgba(255, 0, 85, 0.08);
-      box-shadow: 0 0 15px rgba(255, 0, 85, 0.15);
+      background: rgba(255, 0, 85, 0.1);
+      box-shadow: 0 0 25px rgba(255, 0, 85, 0.2);
     }
 
     .channel-info {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       overflow: hidden;
     }
 
     .channel-name {
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.92rem;
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -234,18 +295,18 @@
 
     .quality-tag {
       font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.2rem 0.45rem;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.1);
-      flex-shrink: 0;
+      font-weight: 800;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      font-family: 'JetBrains Mono', monospace;
     }
 
     /* Servers Grid */
     #serversView {
       display: none;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
       width: 100%;
     }
 
@@ -256,20 +317,20 @@
     .server-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1.25rem;
+      border-radius: 18px;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 1rem;
-      backdrop-filter: blur(8px);
-      transition: transform 0.2s;
+      gap: 1.2rem;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s;
     }
 
     .server-card:hover {
       border-color: var(--cyan);
-      box-shadow: 0 8px 24px var(--cyan-glow);
-      transform: translateY(-3px);
+      box-shadow: 0 10px 30px var(--cyan-glow);
+      transform: translateY(-4px);
     }
 
     .server-header {
@@ -279,16 +340,16 @@
     }
 
     .server-title {
-      font-size: 1.05rem;
-      font-weight: 700;
+      font-size: 1.15rem;
+      font-weight: 800;
       color: #fff;
     }
 
     .server-type {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
       background: rgba(0, 242, 254, 0.12);
       color: var(--cyan);
       border: 1px solid rgba(0, 242, 254, 0.3);
@@ -296,28 +357,27 @@
 
     .server-actions {
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      gap: 0.6rem;
     }
 
     .server-btn {
       flex: 1;
-      min-width: 90px;
       text-align: center;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      padding: 0.5rem 0.75rem;
-      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       border: 1px solid var(--card-border);
-      transition: all 0.2s ease;
+      transition: all 0.25s;
     }
 
     .server-btn:hover {
       background: #fff;
       color: #000;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
 
     .server-btn.mirror {
@@ -331,6 +391,100 @@
       color: #fff;
     }
 
+    /* TELEGRAM VIP LOCK OVERLAY */
+    #lockModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 13, 0.94);
+      backdrop-filter: blur(25px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .lock-box {
+      max-width: 480px;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(20, 25, 40, 0.95), rgba(10, 14, 25, 0.95));
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 24px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 242, 254, 0.15);
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .lock-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .lock-box h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .lock-box p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .telegram-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--telegram);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 6px 25px rgba(34, 158, 217, 0.4);
+    }
+
+    .telegram-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(34, 158, 217, 0.6);
+    }
+
+    .verify-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      font-weight: 700;
+      padding: 0.9rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .verify-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
     @media (max-width: 1024px) {
       #streamView {
         grid-template-columns: 1fr;
@@ -340,7 +494,7 @@
         position: static;
       }
       .channel-list {
-        max-height: 400px;
+        max-height: 420px;
       }
       main {
         padding: 1rem;
@@ -355,8 +509,27 @@
 </head>
 <body>
 
+  <!-- TELEGRAM VIP GATE -->
+  <div id="lockModal">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <h2>ভিআইপি এক্সেস ভেরিফিকেশন</h2>
+      <p>লাইভ স্ট্রিম এবং আল্ট্রা 4K স্পোর্টস হাব উপভোগ করতে প্রথমে আমাদের অফিশিয়াল টেলিগ্রাম চ্যানেলে যুক্ত হন।</p>
+      
+      <a href="https://t.me/rafimhossen3" target="_blank" class="telegram-btn" onclick="allowUnlock()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+        টেলিগ্রামে জয়েন করুন
+      </a>
+      
+      <button class="verify-btn" onclick="verifyAccess()">আমি জয়েন করেছি (আনলক করুন)</button>
+    </div>
+  </div>
+
   <header>
-    <div class="brand">RAFIM<span>SPORTS</span></div>
+    <div class="brand">
+      RAFIM<span>PRIME</span>
+      <span class="badge">ULTRA 4K</span>
+    </div>
     <nav class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('stream', this)">Direct Player</button>
       <button class="tab-btn" onclick="switchTab('servers', this)">Live Servers Hub</button>
@@ -364,7 +537,7 @@
   </header>
 
   <main>
-    <!-- Live Video Player -->
+    <!-- Stream Screen -->
     <div id="streamView" class="view-panel active">
       <section class="player-section">
         <div class="video-container">
@@ -372,25 +545,52 @@
         </div>
         <div class="now-playing">
           <div class="title-area">
-            <h2 id="currentChannel">Select a Channel</h2>
-            <p id="streamInfo">High Bitrate Ultra-Low Latency</p>
+            <h2 id="currentChannel">Loading Stream...</h2>
+            <p id="streamInfo">Connecting to ultra low latency stream...</p>
+          </div>
+          <div class="player-stat">
+            <div class="live-dot"><div class="pulse"></div> LIVE</div>
           </div>
         </div>
       </section>
 
       <aside class="sidebar">
-        <input type="text" id="searchInput" class="search-input" placeholder="সার্চ করুন (যেমন: beIN, ESPN, DAZN, Sports)..." oninput="filterChannels()">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 চ্যানেল খুঁজুন (যেমন: beIN, World Cup, ESPN)..." oninput="filterChannels()">
         <div class="channel-list" id="channelGrid"></div>
       </aside>
     </div>
 
-    <!-- Live Aggregator/Servers Grid -->
+    <!-- Servers Screen -->
     <div id="serversView" class="view-panel"></div>
   </main>
 
   <script>
+    // TELEGRAM LOCK SYSTEM
+    let hasClickedJoin = false;
+
+    function allowUnlock() {
+      hasClickedJoin = true;
+    }
+
+    function verifyAccess() {
+      if (hasClickedJoin || localStorage.getItem('rafim_vip_unlocked') === 'true') {
+        localStorage.setItem('rafim_vip_unlocked', 'true');
+        document.getElementById('lockModal').style.display = 'none';
+        playChannel(streams[0], 0);
+      } else {
+        alert('অনুগ্রহ করে আগে "টেলিগ্রামে জয়েন করুন" বাটনে ক্লিক করে চ্যানেলে যুক্ত হন!');
+      }
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem('rafim_vip_unlocked') === 'true') {
+        document.getElementById('lockModal').style.display = 'none';
+        playChannel(streams[0], 0);
+      }
+    };
+
+    // STREAMS DATABASE
     const streams = [
-      // পূর্বের মূল চ্যানেল
       { name: "T Sports HD", quality: "720p", url: "http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/130714.ts" },
       { name: "Bein Max2", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria1/video.m3u8" },
       { name: "4k HDR", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria3/video.m3u8" },
@@ -432,16 +632,10 @@
       { name: "DSports Option 6", quality: "HD", url: "http://190.223.48.46:8000/play/a028/index.m3u8" },
       { name: "DSports Option 7", quality: "HD", url: "http://191.97.59.33:8000/play/a09t/index.m3u8" },
       { name: "DSports Option 8", quality: "HD", url: "http://190.117.20.37:8000/play/a08d/index.m3u8" },
-      { name: "DSports Option 9", quality: "HD", url: "http://177.53.152.117:8000/play/a07d/index.m3u8" },
-      { name: "DSports Option 10", quality: "HD", url: "http://8.243.126.131:8000/play/a05a/index.m3u8" },
-      { name: "DSports Option 11", quality: "HD", url: "http://177.10.184.193:8000/play/a0fc/index.m3u8" },
-      { name: "DSports Option 12", quality: "HD", url: "http://217.26.190.76:8888/play/a05a/index.m3u8" },
       { name: "Redbull TV", quality: "1080p", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
       { name: "NBA TV", quality: "HD", url: "http://41.223.30.230/ESPN2/index.m3u8" },
       { name: "Cricket Gold", quality: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
       { name: "FIGHT NETWORK", quality: "HD", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
-
-      // নতুন স্ক্রিনশট থেকে যুক্ত চ্যানেল
       { name: "WIN+ Peru", quality: "HD", url: "http://147.135.114.221:8001/play/a00u/index.m3u8" },
       { name: "Caracol TV", quality: "HD", url: "http://181.78.8.199:8000/play/a0b0/index.m3u8" },
       { name: "Choppertown", quality: "HD", url: "https://7d8dc76d76946c8d372d6ed7b22333.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-11-Choppertown-SPORTSTRIBAL/mt/sportstribaltv/11/hls/master/playlist.m3u8" },
@@ -456,73 +650,14 @@
       { name: "Hard Knocks", quality: "HD", url: "https://d3uyzbavmewdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/HardKnocks-SportsTribalV2/121.m3u8" },
       { name: "Harlem Globetrotters", quality: "HD", url: "https://32d0f0785a2a46d28117199f63ad736a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_TheHarlemGlobetrotters/playlist.m3u8" },
       { name: "Horse & Country", quality: "HD", url: "https://hncfree-sportstribal.amagi.tv/hls/amagi_hls_data_sportstri-hncfree-sportstribal/CDN/playlist.m3u8" },
-      { name: "WIN Sports Option 1", quality: "HD", url: "http://8.243.126.131:8000/play/a025/index.m3u8" },
-      { name: "WIN Sports Option 2", quality: "HD", url: "http://181.78.17.52:18000/play/a0pw/index.m3u8" },
-      { name: "WIN Sports Option 3", quality: "HD", url: "http://181.78.71.71:18000/play/a03p/index.m3u8" },
-      { name: "WIN Sports Option 4", quality: "HD", url: "http://190.60.37.154:45000/play/a00q/index.m3u8" },
       { name: "TYC Sports", quality: "HD", url: "http://190.60.37.154:45000/play/a05a/index.m3u8" },
-      { name: "DSports 8", quality: "HD", url: "http://190.117.20.37:8000/play/a08d/index.m3u8" },
       { name: "ESPN Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0pz/index.m3u8" },
       { name: "TNT Sports Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0xa/index.m3u8" },
-      { name: "TNT Sports Premium 2", quality: "HD", url: "http://205.235.6.29:8000/play/a106/index.m3u8" },
-      { name: "ESPN 7", quality: "HD", url: "http://205.235.6.29:8000/play/a0zf/index.m3u8" },
-      { name: "ESPN 7 Extra", quality: "HD", url: "http://205.235.6.29:8000/play/a0zu/index.m3u8" },
-      { name: "WIN Sports Option 5", quality: "HD", url: "http://217.26.190.76:8888/play/a06a/index.m3u8" },
-      { name: "DSports Option 13", quality: "HD", url: "http://217.26.190.76:8888/play/a0jb/index.m3u8" },
-      { name: "DSports Option 14", quality: "HD", url: "http://38.226.210.46:8000/play/A008/index.m3u8" },
       { name: "TUDN USA", quality: "HD", url: "http://s3u.tvcluboficial.com/m/s/957.m3u8" },
-      { name: "WIN Sports Direct", quality: "HD", url: "http://s3u.tvcluboficial.com/m/w/1039.m3u8" },
       { name: "WIN Sports+", quality: "HD", url: "http://s3u.tvcluboficial.com/m/w/1042.m3u8" },
       { name: "beIN Sports Xtra", quality: "HD", url: "https://amg01334-beinsportsllc-beinstraesp-localnow-amkzc.amagi.tv/playlist.m3u8" },
-      { name: "ESPN Premium CHI", quality: "HD", url: "http://186.33.40.97:8789/play/22" },
-      { name: "WIN Sports Option 6", quality: "HD", url: "http://190.60.39.196:8000/play/a0ug/index.m3u8" },
-      { name: "ESPN 1 (Alt)", quality: "HD", url: "http://190.7.19.197:232/play/a038/index.m3u8" },
-      { name: "ESPN 5", quality: "HD", url: "http://181.118.158.103:8000/play/a03c/index.m3u8" },
-      { name: "ESPN ARG", quality: "HD", url: "http://45.170.130.224:8000/play/a04i/index.m3u8" },
-      { name: "TYC Sports Internacional", quality: "HD", url: "http://190.7.19.197:232/play/a04w/index.m3u8" },
-      { name: "ARG ESPN 1", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327915" },
-      { name: "ARG ESPN 2", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327914" },
-      { name: "ARG ESPN 3", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327916" },
-      { name: "ARG ESPN Extra", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327917" },
-      { name: "ARG ESPN Premium OP2", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/377719" },
-      { name: "ARG ESPN HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81262.ts" },
-      { name: "ARG ESPN 2 SD", quality: "SD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81259.ts" },
-      { name: "ARG ESPN 2 HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81258.ts" },
-      { name: "ARG FOX Sports 2 HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/50507.ts" },
-      { name: "ARG TYC Sports SD", quality: "SD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81253.ts" },
-      { name: "ARG TYC Sports HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81252.ts" },
-      { name: "ARG TYC Sports Inter.", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81538.ts" },
-      { name: "ARG TNT Sports HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/361001.ts" },
-      { name: "ARG ESPN HD (Alt)", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/306497.ts" },
-      { name: "ARG ESPN 2 HD (Alt)", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/306486.ts" },
-      { name: "DAZN 1 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven1.m3u8" },
-      { name: "DAZN 2 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven2.m3u8" },
-      { name: "DAZN 3 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven3.m3u8" },
-      { name: "DAZN 4 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven4.m3u8" },
-      { name: "DAZN 5 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven5.m3u8" },
       { name: "BEIN SPORTS 2 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78379.ts" },
-      { name: "BEIN SPORTS 3 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/89342.ts" },
-      { name: "BEIN SPORTS 4 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78381.ts" },
-      { name: "BEIN SPORTS 5 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78382.ts" },
-      { name: "BEIN SPORTS 6 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78383.ts" },
-      { name: "RTI 1 (1080p)", quality: "1080p", url: "http://69.64.57.208:8080/rti1/playlist.m3u8" },
-      { name: "RTI 2 (1080p)", quality: "1080p", url: "http://69.64.57.208:8080/rti2/playlist.m3u8" },
-      { name: "BEIN Sports 1 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8" },
-      { name: "BEIN Sports 2 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs2.m3u8" },
-      { name: "BEIN Sports 3 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs3.m3u8" },
-      { name: "BEIN Sports 4 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs4.m3u8" },
-      { name: "BEIN Sports 5 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs5.m3u8" },
-      { name: "ESPN (Backup 1)", quality: "HD", url: "http://181.118.158.103:8000/play/a038/index.m3u8" },
-      { name: "ESPN 2 (Backup 1)", quality: "HD", url: "http://181.118.158.103:8000/play/a039/index.m3u8" },
-      { name: "TNT Sports (Backup 1)", quality: "HD", url: "http://45.232.210.1:18000/play/a08x/index.m3u8" },
-      { name: "TNT Sports (Backup 2)", quality: "HD", url: "http://45.181.122.46:8090/play/a04w" },
-      { name: "TNT Premium (Principal)", quality: "HD", url: "http://38.226.210.46:8000/play/m05m/index.m3u8" },
-      { name: "TNT Premium (Backup 4)", quality: "HD", url: "http://daleplaytv.vip:80/live/123000/654321/276334.ts" },
-      { name: "ESPN 1 LAT (720)", quality: "720p", url: "http://gol-tv.online:80/12345678/12345678/845120" },
-      { name: "ESPN 2 (Backup 2)", quality: "HD", url: "http://181.176.155.7:8090/play/alvw/index.m3u8" },
-      { name: "ESPN 2 (Backup 3)", quality: "HD", url: "http://45.167.1.136:8000/play/a06b" },
-      { name: "ESPN 3 (Principal)", quality: "HD", url: "http://45.167.1.136:8000/play/a02k" },
-      { name: "ESPN 3 (Backup)", quality: "HD", url: "http://181.122.46:8090/play/a01t" }
+      { name: "BEIN Sports 1 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8" }
     ];
 
     const servers = [
@@ -559,7 +694,7 @@
         card.className = `channel-card ${originalIndex === selectedIndex ? 'active' : ''}`;
         card.innerHTML = `
           <div class="channel-info">
-            <span>📺</span>
+            <span>⚡</span>
             <div class="channel-name" title="${channel.name}">${channel.name}</div>
           </div>
           <div class="quality-tag">${channel.quality}</div>
@@ -578,7 +713,7 @@
     function playChannel(channel, index) {
       selectedIndex = index;
       currentChannel.innerText = channel.name;
-      streamInfo.innerText = `Source: ${channel.url}`;
+      streamInfo.innerText = `Protocol: HLS/TS • Source: ${channel.url}`;
 
       const query = document.getElementById('searchInput').value.toLowerCase();
       if (query) {
@@ -615,7 +750,7 @@
       }
     }
 
-    // Load Servers Hub
+    // Load Servers
     servers.forEach(server => {
       const card = document.createElement('div');
       card.className = 'server-card';
@@ -634,7 +769,6 @@
     });
 
     renderChannels(streams);
-    playChannel(streams[0], 0);
   </script>
 </body>
   </html>
