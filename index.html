@@ -1,22 +1,78 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <!-- Google tag (gtag.js) - Realtime Traffic Tracker -->
+  <!-- Google Analytics Tracking -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B43EKVTQ3Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-B43EKVTQ3Z');
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>RAFIM PRIME | Ultra Sports</title>
+
+  <!-- PWA & Mobile App Settings -->
+  <meta name="theme-color" content="#05070d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+
+  <!-- Self-Generating PWA Manifest & Service Worker Script -->
+  <script>
+    const manifestData = {
+      "name": "RAFIM PRIME SPORTS",
+      "short_name": "RafimPrime",
+      "start_url": "./",
+      "display": "standalone",
+      "background_color": "#05070d",
+      "theme_color": "#ff0055",
+      "orientation": "portrait-primary",
+      "icons": [
+        {
+          "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any maskable"
+        },
+        {
+          "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "any maskable"
+        }
+      ]
+    };
+    const stringManifest = JSON.stringify(manifestData);
+    const blobManifest = new Blob([stringManifest], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(blobManifest);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);
+
+    // Register Inline Service Worker for Instant Installation
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('install', e => self.skipWaiting());
+        self.addEventListener('activate', e => self.clients.claim());
+        self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response('Offline'))));
+      `;
+      const blobSW = new Blob([swCode], {type: 'application/javascript'});
+      const swUrl = URL.createObjectURL(blobSW);
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register(swUrl).catch(() => {});
+      });
+    }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
   <style>
     :root {
       --bg: #05070d;
@@ -55,7 +111,6 @@
       flex-direction: column;
     }
 
-    /* হেডার */
     header {
       width: 100%;
       display: flex;
@@ -131,7 +186,6 @@
       box-shadow: 0 0 12px var(--accent-glow);
     }
 
-    /* মেইন কন্টেন্ট */
     main {
       width: 100%;
       max-width: 1400px;
@@ -151,7 +205,6 @@
       gap: 1rem;
     }
 
-    /* প্লেয়ার সেকশন */
     .player-section {
       width: 100%;
       display: flex;
@@ -238,7 +291,6 @@
       50% { opacity: 0.3; }
     }
 
-    /* চ্যানেল সাইডবার */
     .sidebar {
       width: 100%;
       display: flex;
@@ -316,7 +368,6 @@
       flex-shrink: 0;
     }
 
-    /* সার্ভার হাব ভিউ */
     #serversView {
       display: none;
       width: 100%;
@@ -386,7 +437,7 @@
       color: #ff4d82;
     }
 
-    /* লক মডাল */
+    /* VIP Telegram Lock */
     #lockModal {
       position: fixed;
       inset: 0;
@@ -479,17 +530,14 @@
 </head>
 <body>
 
-  <!-- টেলিগ্রাম গেট -->
   <div id="lockModal">
     <div class="lock-box">
       <div style="font-size: 3rem;">🔒</div>
       <h2>ভিআইপি এক্সেস ভেরিফিকেশন</h2>
       <p>লাইভ স্ট্রিমগুলো আনলক করতে প্রথমে আমাদের টেলিগ্রাম চ্যানেলে জয়েন করুন।</p>
-      
       <a href="https://t.me/rafimhossen3" target="_blank" class="telegram-btn" onclick="allowUnlock()">
         টেলিগ্রামে জয়েন করুন
       </a>
-      
       <button class="verify-btn" onclick="verifyAccess()">আমি জয়েন করেছি (আনলক করুন)</button>
     </div>
   </div>
@@ -724,4 +772,4 @@
     renderChannels(streams);
   </script>
 </body>
-  </html>
+</html>
