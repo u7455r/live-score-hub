@@ -379,7 +379,7 @@
       </section>
 
       <aside class="sidebar">
-        <input type="text" id="searchInput" class="search-input" placeholder="সার্চ করুন (যেমন: beIN, Sony, FOX)..." oninput="filterChannels()">
+        <input type="text" id="searchInput" class="search-input" placeholder="সার্চ করুন (যেমন: beIN, ESPN, DAZN, Sports)..." oninput="filterChannels()">
         <div class="channel-list" id="channelGrid"></div>
       </aside>
     </div>
@@ -390,6 +390,7 @@
 
   <script>
     const streams = [
+      // পূর্বের মূল চ্যানেল
       { name: "T Sports HD", quality: "720p", url: "http://rgkkw.live/live/1Aoen7elp5/IgMJ60tmAa/130714.ts" },
       { name: "Bein Max2", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria1/video.m3u8" },
       { name: "4k HDR", quality: "1080p", url: "http://go8knm.optikl.ink/X/index.php/Besyria3/video.m3u8" },
@@ -438,7 +439,90 @@
       { name: "Redbull TV", quality: "1080p", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
       { name: "NBA TV", quality: "HD", url: "http://41.223.30.230/ESPN2/index.m3u8" },
       { name: "Cricket Gold", quality: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
-      { name: "FIGHT NETWORK", quality: "HD", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" }
+      { name: "FIGHT NETWORK", quality: "HD", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
+
+      // নতুন স্ক্রিনশট থেকে যুক্ত চ্যানেল
+      { name: "WIN+ Peru", quality: "HD", url: "http://147.135.114.221:8001/play/a00u/index.m3u8" },
+      { name: "Caracol TV", quality: "HD", url: "http://181.78.8.199:8000/play/a0b0/index.m3u8" },
+      { name: "Choppertown", quality: "HD", url: "https://7d8dc76d76946c8d372d6ed7b22333.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-11-Choppertown-SPORTSTRIBAL/mt/sportstribaltv/11/hls/master/playlist.m3u8" },
+      { name: "Commune TV", quality: "HD", url: "https://d02cdda06ab0450a8acd025e01da0bb8.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_Commune-1/playlist.m3u8" },
+      { name: "Documentary TV", quality: "HD", url: "https://a38d899367d24b1197db60dwdfa80262.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-887-DOCUMENTARYINTERNATIONAL-FREELIVESPORTS/mt/freelivesports/887/hls/master/playlist.m3u8" },
+      { name: "Drone TV", quality: "HD", url: "https://a408c1a910634b47b63f7ba07a0f1dc2.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_DroneTV/playlist.m3u8" },
+      { name: "Field & Stream", quality: "HD", url: "https://3100d8a6ad764beb9da3c6ebf285ba1b.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-600-OUTDOORAMERICA-FREELIVESPORTS/mt/freelivesports/600/hls/master/playlist.m3u8" },
+      { name: "FUEL TV", quality: "HD", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvomuaen-sportstribal/playlist.m3u8" },
+      { name: "GCTV", quality: "HD", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00585-sportstribaltv-gctv-sportstribal/playlist.m3u8" },
+      { name: "GoPro", quality: "HD", url: "https://3a1b4d927c02473ba06350cc162d271f.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-891-GOPRO-FREELIVESPORTS/mt/freelivesports/891/hls/master/playlist.m3u8" },
+      { name: "H2O TV", quality: "HD", url: "https://1261a78709344810a56834d397509879.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-738-H20TV-SPORTSTRIBAL/mt/sportstribaltv/738/hls/master/playlist.m3u8" },
+      { name: "Hard Knocks", quality: "HD", url: "https://d3uyzbavmewdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/HardKnocks-SportsTribalV2/121.m3u8" },
+      { name: "Harlem Globetrotters", quality: "HD", url: "https://32d0f0785a2a46d28117199f63ad736a.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_TheHarlemGlobetrotters/playlist.m3u8" },
+      { name: "Horse & Country", quality: "HD", url: "https://hncfree-sportstribal.amagi.tv/hls/amagi_hls_data_sportstri-hncfree-sportstribal/CDN/playlist.m3u8" },
+      { name: "WIN Sports Option 1", quality: "HD", url: "http://8.243.126.131:8000/play/a025/index.m3u8" },
+      { name: "WIN Sports Option 2", quality: "HD", url: "http://181.78.17.52:18000/play/a0pw/index.m3u8" },
+      { name: "WIN Sports Option 3", quality: "HD", url: "http://181.78.71.71:18000/play/a03p/index.m3u8" },
+      { name: "WIN Sports Option 4", quality: "HD", url: "http://190.60.37.154:45000/play/a00q/index.m3u8" },
+      { name: "TYC Sports", quality: "HD", url: "http://190.60.37.154:45000/play/a05a/index.m3u8" },
+      { name: "DSports 8", quality: "HD", url: "http://190.117.20.37:8000/play/a08d/index.m3u8" },
+      { name: "ESPN Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0pz/index.m3u8" },
+      { name: "TNT Sports Premium 1", quality: "HD", url: "http://205.235.6.29:8000/play/a0xa/index.m3u8" },
+      { name: "TNT Sports Premium 2", quality: "HD", url: "http://205.235.6.29:8000/play/a106/index.m3u8" },
+      { name: "ESPN 7", quality: "HD", url: "http://205.235.6.29:8000/play/a0zf/index.m3u8" },
+      { name: "ESPN 7 Extra", quality: "HD", url: "http://205.235.6.29:8000/play/a0zu/index.m3u8" },
+      { name: "WIN Sports Option 5", quality: "HD", url: "http://217.26.190.76:8888/play/a06a/index.m3u8" },
+      { name: "DSports Option 13", quality: "HD", url: "http://217.26.190.76:8888/play/a0jb/index.m3u8" },
+      { name: "DSports Option 14", quality: "HD", url: "http://38.226.210.46:8000/play/A008/index.m3u8" },
+      { name: "TUDN USA", quality: "HD", url: "http://s3u.tvcluboficial.com/m/s/957.m3u8" },
+      { name: "WIN Sports Direct", quality: "HD", url: "http://s3u.tvcluboficial.com/m/w/1039.m3u8" },
+      { name: "WIN Sports+", quality: "HD", url: "http://s3u.tvcluboficial.com/m/w/1042.m3u8" },
+      { name: "beIN Sports Xtra", quality: "HD", url: "https://amg01334-beinsportsllc-beinstraesp-localnow-amkzc.amagi.tv/playlist.m3u8" },
+      { name: "ESPN Premium CHI", quality: "HD", url: "http://186.33.40.97:8789/play/22" },
+      { name: "WIN Sports Option 6", quality: "HD", url: "http://190.60.39.196:8000/play/a0ug/index.m3u8" },
+      { name: "ESPN 1 (Alt)", quality: "HD", url: "http://190.7.19.197:232/play/a038/index.m3u8" },
+      { name: "ESPN 5", quality: "HD", url: "http://181.118.158.103:8000/play/a03c/index.m3u8" },
+      { name: "ESPN ARG", quality: "HD", url: "http://45.170.130.224:8000/play/a04i/index.m3u8" },
+      { name: "TYC Sports Internacional", quality: "HD", url: "http://190.7.19.197:232/play/a04w/index.m3u8" },
+      { name: "ARG ESPN 1", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327915" },
+      { name: "ARG ESPN 2", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327914" },
+      { name: "ARG ESPN 3", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327916" },
+      { name: "ARG ESPN Extra", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/327917" },
+      { name: "ARG ESPN Premium OP2", quality: "HD", url: "http://rlatinop.com:8880/josesosa547tv/FFy5GgkFmFgh/377719" },
+      { name: "ARG ESPN HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81262.ts" },
+      { name: "ARG ESPN 2 SD", quality: "SD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81259.ts" },
+      { name: "ARG ESPN 2 HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81258.ts" },
+      { name: "ARG FOX Sports 2 HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/50507.ts" },
+      { name: "ARG TYC Sports SD", quality: "SD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81253.ts" },
+      { name: "ARG TYC Sports HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81252.ts" },
+      { name: "ARG TYC Sports Inter.", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/81538.ts" },
+      { name: "ARG TNT Sports HD", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/361001.ts" },
+      { name: "ARG ESPN HD (Alt)", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/306497.ts" },
+      { name: "ARG ESPN 2 HD (Alt)", quality: "HD", url: "http://daleplaytv.vip:80/live/4nd9wbtu/c5hrn9eFhfsa/306486.ts" },
+      { name: "DAZN 1 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven1.m3u8" },
+      { name: "DAZN 2 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven2.m3u8" },
+      { name: "DAZN 3 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven3.m3u8" },
+      { name: "DAZN 4 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven4.m3u8" },
+      { name: "DAZN 5 (Alt)", quality: "HD", url: "http://zmty.dyndns.org:5010/hls/eleven5.m3u8" },
+      { name: "BEIN SPORTS 2 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78379.ts" },
+      { name: "BEIN SPORTS 3 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/89342.ts" },
+      { name: "BEIN SPORTS 4 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78381.ts" },
+      { name: "BEIN SPORTS 5 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78382.ts" },
+      { name: "BEIN SPORTS 6 HD", quality: "HD", url: "http://foxbleu-cdn.com/live/e8:aa:cb:c4:8f:92/aMzPee6/78383.ts" },
+      { name: "RTI 1 (1080p)", quality: "1080p", url: "http://69.64.57.208:8080/rti1/playlist.m3u8" },
+      { name: "RTI 2 (1080p)", quality: "1080p", url: "http://69.64.57.208:8080/rti2/playlist.m3u8" },
+      { name: "BEIN Sports 1 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs1.m3u8" },
+      { name: "BEIN Sports 2 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs2.m3u8" },
+      { name: "BEIN Sports 3 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs3.m3u8" },
+      { name: "BEIN Sports 4 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs4.m3u8" },
+      { name: "BEIN Sports 5 1080P", quality: "1080p", url: "https://andro.226503.xyz/checklist/androstreamlivebs5.m3u8" },
+      { name: "ESPN (Backup 1)", quality: "HD", url: "http://181.118.158.103:8000/play/a038/index.m3u8" },
+      { name: "ESPN 2 (Backup 1)", quality: "HD", url: "http://181.118.158.103:8000/play/a039/index.m3u8" },
+      { name: "TNT Sports (Backup 1)", quality: "HD", url: "http://45.232.210.1:18000/play/a08x/index.m3u8" },
+      { name: "TNT Sports (Backup 2)", quality: "HD", url: "http://45.181.122.46:8090/play/a04w" },
+      { name: "TNT Premium (Principal)", quality: "HD", url: "http://38.226.210.46:8000/play/m05m/index.m3u8" },
+      { name: "TNT Premium (Backup 4)", quality: "HD", url: "http://daleplaytv.vip:80/live/123000/654321/276334.ts" },
+      { name: "ESPN 1 LAT (720)", quality: "720p", url: "http://gol-tv.online:80/12345678/12345678/845120" },
+      { name: "ESPN 2 (Backup 2)", quality: "HD", url: "http://181.176.155.7:8090/play/alvw/index.m3u8" },
+      { name: "ESPN 2 (Backup 3)", quality: "HD", url: "http://45.167.1.136:8000/play/a06b" },
+      { name: "ESPN 3 (Principal)", quality: "HD", url: "http://45.167.1.136:8000/play/a02k" },
+      { name: "ESPN 3 (Backup)", quality: "HD", url: "http://181.122.46:8090/play/a01t" }
     ];
 
     const servers = [
@@ -496,7 +580,12 @@
       currentChannel.innerText = channel.name;
       streamInfo.innerText = `Source: ${channel.url}`;
 
-      renderChannels(streams);
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      if (query) {
+        filterChannels();
+      } else {
+        renderChannels(streams);
+      }
 
       if (hlsInstance) {
         hlsInstance.destroy();
@@ -548,4 +637,4 @@
     playChannel(streams[0], 0);
   </script>
 </body>
-</html>
+  </html>
