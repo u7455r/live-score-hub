@@ -12,7 +12,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAFIM PRIME | Ultra Sports</title>
+  <title>RAFIM PRIME | 100% Working Sports</title>
 
   <meta name="theme-color" content="#05070d">
   <meta name="mobile-web-app-capable" content="yes">
@@ -415,7 +415,7 @@
       color: #ff4d82;
     }
 
-    /* VIP Lock */
+    /* VIP Telegram Lock */
     #lockModal {
       position: fixed;
       inset: 0;
@@ -518,12 +518,12 @@
     <div class="brand-row">
       <div class="brand">
         RAFIM<span>PRIME</span>
-        <span class="badge">LIVE CDN</span>
+        <span class="badge">VERIFIED CDN</span>
       </div>
     </div>
     <nav class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('stream', this)">Direct Player</button>
-      <button class="tab-btn" onclick="switchTab('servers', this)">Live Match Servers (100% Active)</button>
+      <button class="tab-btn" onclick="switchTab('servers', this)">Live Match Hub (100% Active)</button>
     </nav>
   </header>
 
@@ -549,7 +549,7 @@
       </section>
 
       <aside class="sidebar">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 চ্যানেল ফিল্টার করুন..." oninput="filterChannels()">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 চ্যানেল খুঁজুন..." oninput="filterChannels()">
         <div class="channel-list" id="channelGrid"></div>
       </aside>
     </div>
@@ -579,23 +579,33 @@
       }
     };
 
-    // iptv-org এর স্পোর্টস প্লেলিস্ট থেকে বাছাই করা ১০০% সক্রিয় ও ব্রাউজার-বান্ধব CDN চ্যানেল
+    // শতভাগ ব্রাউজারে সচল ভেরিফাইড গ্লোবাল স্পোর্টস CDN চ্যানেল
     const streams = [
       { name: "Red Bull TV Live", quality: "1080p", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
       { name: "Real Madrid TV HD", quality: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
-      { name: "Caze TV BR Live", quality: "1080p", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
+      { name: "Caze TV BR (Amagi HD)", quality: "1080p", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
       { name: "beIN Sports Extra 1", quality: "1080p", url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8" },
       { name: "beIN Sports Extra 2", quality: "720p", url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8" },
+      { name: "beIN Xtra en Español", quality: "1080p", url: "https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bein-sports-xtra-en-espanol/playlist.m3u8" },
+      { name: "Tennis Channel HD", quality: "720p", url: "https://tennischannel-int-samsunguk.amagi.tv/playlist.m3u8" },
+      { name: "SportsGrid 1080p", quality: "1080p", url: "https://sportsgrid-tribal.amagi.tv/playlist1080p.m3u8" },
       { name: "Cricket Gold TV", quality: "720p", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
       { name: "FUEL TV Action Sports", quality: "720p", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvomuaen-sportstribal/playlist.m3u8" },
       { name: "FIGHT NETWORK Live", quality: "720p", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
       { name: "Hard Knocks Fighting", quality: "720p", url: "https://d3uyzbavmewdyf.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/HardKnocks-SportsTribalV2/121.m3u8" },
-      { name: "GCTV Sports", quality: "720p", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00585-sportstribaltv-gctv-sportstribal/playlist.m3u8" },
+      { name: "GCTV Sports Live", quality: "720p", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00585-sportstribaltv-gctv-sportstribal/playlist.m3u8" },
       { name: "Drone Racing Sports", quality: "720p", url: "https://a408c1a910634b47b63f7ba07a0f1dc2.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba0d3e9607dcd9bebdcb8494d86964f1d8/SportsTribal-eu_DroneTV/playlist.m3u8" },
-      { name: "Outdoor Sports Channel", quality: "720p", url: "https://3100d8a6ad764beb9da3c6ebf285ba1b.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-600-OUTDOORAMERICA-FREELIVESPORTS/mt/freelivesports/600/hls/master/playlist.m3u8" }
+      { name: "Outdoor America Sports", quality: "720p", url: "https://3100d8a6ad764beb9da3c6ebf285ba1b.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743dc0fe93366eba3a25d792884136c7f/LINEAR-600-OUTDOORAMERICA-FREELIVESPORTS/mt/freelivesports/600/hls/master/playlist.m3u8" },
+      { name: "World Poker Tour Live", quality: "1080p", url: "https://d39g1vxj2ef6in.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/15d59f2f-80da-4448-9bce-775cc9f470f7/1.m3u8" },
+      { name: "ACISport TV Live", quality: "720p", url: "https://acisport-samsung-it.amagi.tv/playlist.m3u8" },
+      { name: "Horse & Country Live", quality: "720p", url: "https://hncfree-sportstribal.amagi.tv/hls/amagi_hls_data_sportstri-hncfree-sportstribal/CDN/playlist.m3u8" },
+      { name: "World Billiards 720p", quality: "720p", url: "https://d39g1vxj2ef6in.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/2ee2b8d4-acc4-4296-9dc8-66f1ffd0fff8/5.m3u8" },
+      { name: "DraftKings Network", quality: "1080p", url: "https://na.linear.zype.com/e0bd0e23-a958-4e43-8164-4f2fef8876a8/fd3614bd-90bf-4530-a277-65ae3a1720c8-zype/live.m3u8" },
+      { name: "FITE 24/7 Action", quality: "1080p", url: "https://d3d85c7qkywguj.cloudfront.net/scheduler/scheduleMaster/263.m3u8" },
+      { name: "Pac 12 Insider", quality: "1080p", url: "https://pac12-roku-us.amagi.tv/playlist.m3u8" }
     ];
 
-    // লাইভ ম্যাচের দিন ক্রিকেট/ফুটবল দেখার স্থায়ী অটো-আপডেট সার্ভার হাব
+    // লাইভ ক্রিকেট ও ফুটবল ম্যাচের জন্য স্থায়ী অটো-আপডেট সার্ভার হাব
     const servers = [
       { name: "Streamed (টি স্পোর্টস, স্টার স্পোর্টস, সনি লাইভ)", type: "Cricket & Football", main: "https://streamed.pk/", mirror: "https://strmd.link/" },
       { name: "DaddyLiveHD (বিশ্বের সব প্রিমিয়াম স্পোর্টস)", type: "24/7 Live Sports", main: "https://daddylive.org/", mirror: "https://daddylive.nl/" },
