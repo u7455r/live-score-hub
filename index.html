@@ -145,6 +145,7 @@
       max-width: 1200px;
       width: 100%;
       margin: 0 auto;
+      gap: 6px;
     }
 
     .left-tags {
@@ -203,13 +204,40 @@
       50% { opacity: 0.4; }
     }
 
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* অ্যাপ ডাউনলোড / ইন্সটল বাটন */
+    .install-app-btn {
+      background: linear-gradient(135deg, #00f2fe, #0284c7);
+      color: #041019;
+      font-weight: 800;
+      font-size: 0.8rem;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 99px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .install-app-btn:active {
+      transform: scale(0.96);
+    }
+
     .vip-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #000;
       font-weight: 800;
       font-size: 0.8rem;
       border: none;
-      padding: 7px 16px;
+      padding: 7px 14px;
       border-radius: 99px;
       cursor: pointer;
       text-decoration: none;
@@ -427,7 +455,7 @@
     <button class="close-notice" onclick="document.getElementById('announcementBar').style.display='none'">✕</button>
   </div>
 
-  <!-- টপ স্ট্যাটাস ও ভিআইপি বাটন -->
+  <!-- টপ স্ট্যাটাস, অ্যাপ ডাউনলোড ও ভিআইপি বাটন -->
   <div class="top-bar">
     <div class="left-tags">
       <div class="live-badge">
@@ -438,9 +466,15 @@
         <span id="userCount">154</span> লাইভ
       </div>
     </div>
-    <a href="https://t.me/rafimhossen3" target="_blank" class="vip-btn">
-      👑 Get VIP Access
-    </a>
+    <div class="top-actions">
+      <!-- নতুন অ্যাপ ডাউনলোড বাটন -->
+      <button class="install-app-btn" id="pwaInstallBtn" onclick="installApp()">
+        📲 App Download
+      </button>
+      <a href="https://t.me/rafimhossen3" target="_blank" class="vip-btn">
+        👑 VIP
+      </a>
+    </div>
   </div>
 
   <!-- মেইন ভিউপোর্ট -->
@@ -471,7 +505,35 @@
   </main>
 
   <script>
-    // ১০০% ভেরিফায়েড ও ব্রাউজারে চলমান সম্পূর্ণ চ্যানেল তালিকা
+    // PWA সার্ভিস ওয়ার্কার ক্যাশিং
+    if ('serviceWorker' in navigator) {
+      const swCode = `self.addEventListener('fetch', function(e) {});`;
+      const blob = new Blob([swCode], { type: 'text/javascript' });
+      navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+    }
+
+    // অ্যাপ ডাউনলোড হ্যান্ডলার
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwaInstallBtn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert("অ্যাপটি ডাউনলোড করতে ব্রাউজারের ওপরের ৩টি ডটে (⋮) চাপ দিয়ে 'Add to Home screen' বা 'Install app' এ ক্লিক করুন।");
+      }
+    }
+
+    // ১০০% ভেরিফায়েড ও ব্রাউজারে চলমান সম্পূর্ণ চ্যানেল তালিকা (T Sports সহ)
     const streamSources = [
       { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8" },
       { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8" },
@@ -578,4 +640,4 @@
     playStream(0);
   </script>
 </body>
-</html>
+  </html>
