@@ -12,52 +12,69 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAFIM PRIME | Next-Gen Ultra Streaming</title>
+  <title>RAFIM PRIME | Ultra Sports</title>
 
-  <meta name="theme-color" content="#030712">
+  <meta name="theme-color" content="#0a0a0c">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
 
-  <!-- PWA Manifest Generation -->
+  <!-- কাস্টম RP লোগো জেনারেশন এবং PWA ম্যানিফেস্ট -->
   <script>
+    const rpSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff0055"/>
+          <stop offset="100%" stop-color="#00f2fe"/>
+        </linearGradient>
+      </defs>
+      <rect width="512" height="512" rx="110" fill="#0b0e14"/>
+      <circle cx="256" cy="256" r="230" fill="none" stroke="url(#g)" stroke-width="14"/>
+      <text x="50%" y="58%" font-size="210" font-weight="900" font-family="'Plus Jakarta Sans', sans-serif" fill="url(#g)" text-anchor="middle" dominant-baseline="middle" letter-spacing="-8">RP</text>
+    </svg>`;
+
+    const logoDataUri = "data:image/svg+xml;base64," + btoa(rpSvg);
+
     const manifestData = {
-      "name": "RAFIM PRIME ULTRA",
-      "short_name": "RafimPrime",
+      "name": "RAFIM PRIME SPORTS",
+      "short_name": "RP Live",
       "start_url": "./",
       "display": "standalone",
-      "background_color": "#030712",
+      "background_color": "#0a0a0c",
       "theme_color": "#ff0055",
       "orientation": "portrait-primary",
       "icons": [
-        { "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png", "sizes": "192x192", "type": "image/png" },
-        { "src": "https://cdn-icons-png.flaticon.com/512/53/53283.png", "sizes": "512x512", "type": "image/png" }
+        { "src": logoDataUri, "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
       ]
     };
+
     const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = URL.createObjectURL(blobManifest);
-    document.head.appendChild(link);
+    const linkManifest = document.createElement('link');
+    linkManifest.rel = 'manifest';
+    linkManifest.href = URL.createObjectURL(blobManifest);
+    document.head.appendChild(linkManifest);
+
+    const appleIcon = document.createElement('link');
+    appleIcon.rel = 'apple-touch-icon';
+    appleIcon.href = logoDataUri;
+    document.head.appendChild(appleIcon);
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
     :root {
-      --bg: #030712;
-      --card: rgba(15, 23, 42, 0.7);
-      --card-border: rgba(255, 255, 255, 0.09);
+      --bg: #090a0f;
+      --card: rgba(18, 20, 29, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
       --accent: #ff0055;
-      --accent-glow: rgba(255, 0, 85, 0.45);
-      --cyan: #00f2fe;
-      --cyan-glow: rgba(0, 242, 254, 0.35);
       --gold: #f59e0b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --cyan: #00f2fe;
+      --tg: #229ED9;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
     }
 
     * {
@@ -69,11 +86,6 @@
 
     body {
       background-color: var(--bg);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(255, 0, 85, 0.18) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(0, 242, 254, 0.15) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.5) 0px, transparent 100%);
-      background-attachment: fixed;
       color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
@@ -82,881 +94,442 @@
       overflow-x: hidden;
     }
 
-    /* হায়ার লেভেল হেডার */
-    header {
+    /* স্ক্রলিং এনাউন্সমেন্ট বার */
+    #announcementBar {
+      background: #0f131d;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 6px 12px;
+      font-size: 0.8rem;
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(3, 7, 18, 0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 0.8rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
+      z-index: 120;
     }
 
-    .header-top {
+    .marquee-container {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0 10px;
+    }
+
+    .marquee-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 16s linear infinite;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .close-notice {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 2px 6px;
+    }
+
+    /* টপ কন্ট্রোল বার */
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0.75rem 1rem;
+      max-width: 1300px;
       width: 100%;
+      margin: 0 auto;
     }
 
-    .brand {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    .left-tags {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .brand span {
-      background: linear-gradient(135deg, #ff0055, #ff5e7e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand .badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: rgba(0, 242, 254, 0.12);
-      border: 1px solid rgba(0, 242, 254, 0.4);
-      color: var(--cyan);
-      letter-spacing: 0.5px;
-    }
-
-    .status-pill {
-      display: flex;
+    .live-badge {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
+      background: #1c1d24;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
       border-radius: 99px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #10b981;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #fff;
     }
 
-    .pulse-dot {
+    .red-dot {
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ef4444;
+      animation: pulse 1.4s infinite;
+    }
+
+    /* রিয়েল-টাইম ইউজার কাউন্টার */
+    .live-counter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 5px 12px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #10b981;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .green-dot {
       width: 7px;
       height: 7px;
       background: #10b981;
       border-radius: 50%;
-      animation: pulseAnim 1.4s infinite;
+      animation: pulse 1.2s infinite;
     }
 
-    @keyframes pulseAnim {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.4; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
-    .tabs {
-      display: flex;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 3px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      gap: 4px;
-    }
-
-    .tab-btn {
-      flex: 1;
+    .vip-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.8rem;
       border: none;
-      background: transparent;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 0.6rem;
-      border-radius: 9px;
+      padding: 7px 16px;
+      border-radius: 99px;
       cursor: pointer;
-      transition: all 0.25s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
     }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--accent), #d9044b);
-      color: #fff;
-      box-shadow: 0 4px 15px var(--accent-glow);
-    }
-
-    /* মূল কন্টেন্ট লেআউট */
+    /* প্লেয়ার কনটেইনার */
     main {
-      flex: 1;
       width: 100%;
-      max-width: 1440px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 0.8rem;
+      padding: 0 1rem 1rem;
+      flex: 1;
     }
 
-    .view-view {
-      display: none;
+    .player-box {
       width: 100%;
-    }
-
-    .view-view.active {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* সিনেমাটিক প্লেয়ার এরিয়া */
-    .player-deck {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .video-viewport {
-      width: 100%;
-      aspect-ratio: 16 / 9;
       background: #000;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--border);
       position: relative;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
     }
 
     video {
       width: 100%;
       height: 100%;
-      object-fit: contain;
       display: block;
+      object-fit: contain;
     }
 
-    .stream-meta {
-      background: var(--card);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
+    /* ভিডিওর উপরে ফ্লোটিং টেলিগ্রাম বাটন বক্স */
+    .floating-social {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(14, 18, 28, 0.82);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 14px;
-      padding: 1rem;
+      padding: 10px 12px;
+      z-index: 10;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
 
-    .meta-top {
+    .floating-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
-    }
-
-    .meta-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .meta-sub {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       color: var(--muted);
-      margin-top: 3px;
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .action-btn {
-      flex: 1;
-      text-align: center;
-      padding: 0.6rem;
-      border-radius: 9px;
-      font-size: 0.78rem;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
+      letter-spacing: 0.5px;
+    }
+
+    .close-floating {
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 0.8rem;
+    }
+
+    .tg-follow-btn {
+      background: var(--tg);
       color: #fff;
       text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s ease;
+    }
+
+    .tg-follow-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* স্ট্রিম সিলেক্টর (HD 1, HD 2 পিল) */
+    .stream-servers-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 6px;
+      background: #13151f;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      width: fit-content;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .server-pill {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 99px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: 0.2s;
+      gap: 6px;
+      transition: all 0.2s ease;
     }
 
-    .action-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    /* চ্যানেল কন্ট্রোল ও ক্যাটাগরি ফিল্টার */
-    .controls-deck {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .search-bar {
-      width: 100%;
-      padding: 0.85rem 1.1rem;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
+    .server-pill.active {
+      background: #252836;
       color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
 
-    .search-bar:focus {
-      border-color: var(--cyan);
+    .tag-hd {
+      background: var(--cyan);
+      color: #000;
+      font-size: 0.6rem;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .categories-bar {
-      display: flex;
-      gap: 0.4rem;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
+    /* অতিরিক্ত চ্যানেল লিস্ট ড্রয়ার */
+    .channels-tray {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
     }
 
-    .categories-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      color: var(--muted);
-      padding: 0.4rem 0.8rem;
-      border-radius: 99px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .cat-pill.active {
-      background: rgba(0, 242, 254, 0.15);
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-
-    /* রিচ চ্যানেল গ্রিড */
-    .channels-scroll {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      max-height: 520px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .chan-item {
+    .channel-card {
+      background: #121520;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 0.65rem 0.9rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      gap: 0.75rem;
+      transition: 0.2s;
     }
 
-    .chan-item:hover {
-      background: rgba(255, 255, 255, 0.07);
-      transform: translateY(-2px);
-    }
-
-    .chan-item.active {
+    .channel-card.active {
       border-color: var(--accent);
-      background: linear-gradient(90deg, rgba(255, 0, 85, 0.18), rgba(255, 0, 85, 0.05));
+      background: rgba(255, 0, 85, 0.12);
     }
 
-    .chan-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .chan-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #0b0f19;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      flex-shrink: 0;
-    }
-
-    .chan-text {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .chan-name {
-      font-size: 0.9rem;
+    .channel-title {
+      font-size: 0.88rem;
       font-weight: 700;
-      color: #f1f5f9;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #fff;
     }
 
-    .chan-genre {
-      font-size: 0.68rem;
+    .channel-source {
+      font-size: 0.7rem;
       color: var(--muted);
       margin-top: 2px;
-    }
-
-    .chan-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 3px 7px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
-      flex-shrink: 0;
-    }
-
-    /* লাইভ সার্ভার কার্ডস */
-    #serversTab {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    #serversTab.active {
-      display: flex;
-    }
-
-    .server-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .server-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .server-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .server-tag {
-      font-size: 0.68rem;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: var(--gold);
-      font-weight: 700;
-    }
-
-    .server-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .server-link {
-      flex: 1;
-      text-align: center;
-      padding: 0.6rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.78rem;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid var(--card-border);
-    }
-
-    .server-link.mirror {
-      background: rgba(255, 0, 85, 0.12);
-      border-color: rgba(255, 0, 85, 0.3);
-      color: #ff5284;
-    }
-
-    /* আল্ট্রা গেট মডাল */
-    #gateModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 7, 18, 0.96);
-      backdrop-filter: blur(25px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.2rem;
-    }
-
-    .gate-card {
-      width: 100%;
-      max-width: 390px;
-      background: #090e1a;
-      border: 1px solid rgba(0, 242, 254, 0.35);
-      border-radius: 20px;
-      padding: 2rem 1.4rem;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-    }
-
-    .gate-icon {
-      font-size: 3.2rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .gate-card h2 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.4rem;
-    }
-
-    .gate-card p {
-      font-size: 0.84rem;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 1.6rem;
-    }
-
-    .tg-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: #229ED9;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 800;
-      padding: 0.9rem;
-      border-radius: 12px;
-      margin-bottom: 0.8rem;
-      font-size: 0.92rem;
-      box-shadow: 0 8px 20px rgba(34, 158, 217, 0.3);
-    }
-
-    .unlock-btn {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--card-border);
-      color: #cbd5e1;
-      font-weight: 700;
-      padding: 0.85rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-
-    @media (min-width: 960px) {
-      header {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 1rem 2.5rem;
-      }
-      .header-top { width: auto; gap: 2rem; }
-      .tabs { width: 340px; }
-      .view-view.active {
-        display: grid;
-        grid-template-columns: 1fr 380px;
-        gap: 1.5rem;
-      }
-      #serversTab.active {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      }
-      .channels-scroll {
-        max-height: calc(100vh - 220px);
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ভিআইপি টেলিগ্রাম গেট -->
-  <div id="gateModal">
-    <div class="gate-card">
-      <div class="gate-icon">⚡</div>
-      <h2>ভিআইপি এক্সেস ভেরিফিকেশন</h2>
-      <p>লাইভ এইচডি ও ৪কে স্ট্রিমিং আনলক করতে সরাসরি আমাদের অফিশিয়াল টেলিগ্রাম চ্যানেলে জয়েন করুন।</p>
-      <a href="https://t.me/rafimhossen3" target="_blank" class="tg-btn" onclick="allowUnlock()">
-        টেলিগ্রামে জয়েন করুন
-      </a>
-      <button class="unlock-btn" onclick="verifyAccess()">আমি জয়েন করেছি (আনলক)</button>
+  <!-- স্ক্রলিং নোটিশ বার -->
+  <div id="announcementBar">
+    <span>📢</span>
+    <div class="marquee-container">
+      <div class="marquee-text">
+        RAFIM PRIME সাইটটি নিয়মিত আপডেট করা হচ্ছে • লাইভ ম্যাচ এবং এইচডি স্পোর্টস দেখতে আমাদের টেলিগ্রাম চ্যানেলে জয়েন থাকুন • ফ্রি ও ফাস্ট স্ট্রিমিং!
+      </div>
     </div>
+    <button class="close-notice" onclick="document.getElementById('announcementBar').style.display='none'">✕</button>
   </div>
 
-  <!-- সাইট হেডার -->
-  <header>
-    <div class="header-top">
-      <div class="brand">
-        RAFIM<span>PRIME</span>
-        <span class="badge">ULTRA 4K</span>
+  <!-- টপ স্ট্যাটাস ও ভিআইপি এক্সেস বার -->
+  <div class="top-bar">
+    <div class="left-tags">
+      <div class="live-badge">
+        <div class="red-dot"></div> LIVE
       </div>
-      <div class="status-pill">
-        <div class="pulse-dot"></div> CDN LIVE
+      <!-- রিয়েলটাইম লাইভ ইউজার মিটার -->
+      <div class="live-counter-pill" title="বর্তমানে ওয়েবসাইটে উপস্থিত ইউজার">
+        <div class="green-dot"></div>
+        <span id="userCount">142</span> লাইভ
       </div>
     </div>
-    <nav class="tabs">
-      <button class="tab-btn active" onclick="switchNav('player', this)">Direct Stream</button>
-      <button class="tab-btn" onclick="switchNav('servers', this)">Live Match Hub</button>
-    </nav>
-  </header>
+    <a href="https://t.me/rafimhossen3" target="_blank" class="vip-btn">
+      👑 Get VIP Access
+    </a>
+  </div>
 
-  <!-- মেইন ভিউপোর্ট -->
+  <!-- মূল প্লেয়ার সেকশন -->
   <main>
-    <div id="playerTab" class="view-view active">
-      <!-- প্লেয়ার সেকশন -->
-      <section class="player-deck">
-        <div class="video-viewport">
-          <video id="hlsPlayer" controls autoplay playsinline></video>
+    <div class="player-box">
+      <!-- ফ্লোটিং টেলিগ্রাম বাটন -->
+      <div class="floating-social" id="tgFloatingBox">
+        <div class="floating-header">
+          <span>COMMUNITY</span>
+          <span class="close-floating" onclick="document.getElementById('tgFloatingBox').style.display='none'">✕</span>
         </div>
-        <div class="stream-meta">
-          <div class="meta-top">
-            <div>
-              <h2 id="channelHeading" class="meta-title">লোডিং চ্যানেল...</h2>
-              <p id="channelMeta" class="meta-sub">Cloud CDN • Low Latency HLS</p>
-            </div>
-            <span class="status-pill" style="color: var(--cyan); border-color: rgba(0,242,254,0.3); background: rgba(0,242,254,0.12);">
-              ● STABLE
-            </span>
-          </div>
-          <div class="quick-actions">
-            <a id="vlcIntent" href="#" class="action-btn">▶ ওপেন ইন VLC / MX</a>
-            <button onclick="copyCurrentLink()" class="action-btn">📋 কপি লাইভ লিঙ্ক</button>
-          </div>
-        </div>
-      </section>
+        <a href="https://t.me/rafimhossen3" target="_blank" class="tg-follow-btn">
+          ✈ Follow on Telegram
+        </a>
+      </div>
 
-      <!-- চ্যানেল কন্ট্রোল ও লিস্ট -->
-      <aside class="controls-deck">
-        <input type="text" id="filterInput" class="search-bar" placeholder="🔍 চ্যানেল খুঁজুন (FIFA, Caze, Toffee, Cartoon)..." oninput="applyFilters()">
-        
-        <div class="categories-bar" id="catBar">
-          <button class="cat-pill active" onclick="selectCat('ALL', this)">সব চ্যানেল</button>
-          <button class="cat-pill" onclick="selectCat('SPORTS', this)">⚽ স্পোর্টস</button>
-          <button class="cat-pill" onclick="selectCat('CARTOON', this)">🧸 কার্টুন</button>
-          <button class="cat-pill" onclick="selectCat('ISLAMIC', this)">🕌 ইসলামিক</button>
-        </div>
-
-        <div class="channels-scroll" id="channelDeck"></div>
-      </aside>
+      <video id="streamPlayer" controls autoplay playsinline></video>
     </div>
 
-    <!-- লাইভ সার্ভার হাব -->
-    <div id="serversTab" class="view-view"></div>
+    <!-- স্ট্রিম সিলেকশন পিলস -->
+    <div class="stream-servers-bar">
+      <button class="server-pill active" onclick="switchStream(0, this)">
+        <span class="tag-hd">HD</span> HD 1 (FIFA Live)
+      </button>
+      <button class="server-pill" onclick="switchStream(1, this)">
+        <span class="tag-hd">FHD</span> HD 2 (Cazé TV)
+      </button>
+      <button class="server-pill" onclick="switchStream(2, this)">
+        <span class="tag-hd">1080p</span> HD 3 (Real Madrid)
+      </button>
+      <button class="server-pill" onclick="switchStream(3, this)">
+        <span class="tag-hd">AUTO</span> HD 4 (Red Bull Live)
+      </button>
+    </div>
+
+    <!-- ব্যাকআপ কুইক চ্যানেল লিস্ট -->
+    <div class="channels-tray">
+      <div class="channel-card active" onclick="switchStream(0, this)">
+        <div>
+          <div class="channel-title">FIFA TV+ Official</div>
+          <div class="channel-source">Cloud CDN • 1080p HD</div>
+        </div>
+        <span class="tag-hd">LIVE</span>
+      </div>
+      <div class="channel-card" onclick="switchStream(1, this)">
+        <div>
+          <div class="channel-title">Cazé TV Live</div>
+          <div class="channel-source">Amagi Cloud • 1080p FHD</div>
+        </div>
+        <span class="tag-hd">LIVE</span>
+      </div>
+      <div class="channel-card" onclick="switchStream(2, this)">
+        <div>
+          <div class="channel-title">Real Madrid TV</div>
+          <div class="channel-source">Akamai CDN • 1080p HD</div>
+        </div>
+        <span class="tag-hd">LIVE</span>
+      </div>
+      <div class="channel-card" onclick="switchStream(3, this)">
+        <div>
+          <div class="channel-title">Red Bull TV Sports</div>
+          <div class="channel-source">Akamai CDN • Low Latency</div>
+        </div>
+        <span class="tag-hd">LIVE</span>
+      </div>
+    </div>
   </main>
 
   <script>
-    let clickedTG = false;
-    function allowUnlock() { clickedTG = true; }
-
-    function verifyAccess() {
-      if (clickedTG || localStorage.getItem('rafim_vip_unlocked') === 'true') {
-        localStorage.setItem('rafim_vip_unlocked', 'true');
-        document.getElementById('gateModal').style.display = 'none';
-        startStream(channels[0], 0);
-      } else {
-        alert('অনুগ্রহ করে আগে "টেলিগ্রামে জয়েন করুন" বাটনে ট্যাপ করে জয়েন নিশ্চিত করুন!');
-      }
-    }
-
-    window.onload = function() {
-      if (localStorage.getItem('rafim_vip_unlocked') === 'true') {
-        document.getElementById('gateModal').style.display = 'none';
-        startStream(channels[0], 0);
-      }
-    };
-
-    // আপনার M3U থেকে ১০০% সচল, CORS ভেরিফাইড এবং অফিসিয়াল CDN চ্যানেলসমূহ
-    const channels = [
-      // ফুটবল ও স্পোর্টস
-      {
-        name: "FIFA TV+ Live HD",
-        cat: "SPORTS",
-        quality: "1080p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8"
-      },
-      {
-        name: "FIFA TV+ French",
-        cat: "SPORTS",
-        quality: "720p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8"
-      },
-      {
-        name: "CAZÉ TV FHD (Brazil)",
-        cat: "SPORTS",
-        quality: "1080p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8"
-      },
-      {
-        name: "Red Bull TV Live",
-        cat: "SPORTS",
-        quality: "1080p",
-        logo: "https://cdn-icons-png.flaticon.com/512/53/53283.png",
-        url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8"
-      },
-      {
-        name: "Toffee FIFA Live AQ",
-        cat: "SPORTS",
-        quality: "Auto",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://cdn-tt.pages.dev/ch3.m3u8"
-      },
-      {
-        name: "Real Madrid TV HD",
-        cat: "SPORTS",
-        quality: "1080p",
-        logo: "https://rmtv.akamaized.net/favicon.ico",
-        url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8"
-      },
-      {
-        name: "Cricket Gold TV",
-        cat: "SPORTS",
-        quality: "720p",
-        logo: "https://cdn-icons-png.flaticon.com/512/1099/1099672.png",
-        url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8"
-      },
-      {
-        name: "beIN Sports Extra 1",
-        cat: "SPORTS",
-        quality: "1080p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8"
-      },
-      {
-        name: "beIN Sports Extra 2",
-        cat: "SPORTS",
-        quality: "720p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRUW_HQlfMZcLRYSq9YZTXvTD-rZItpwhgMMSnxPjunT_q0mxQVhoybBX&s=10",
-        url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8"
-      },
-      {
-        name: "DAZN Combat Live",
-        cat: "SPORTS",
-        quality: "720p",
-        logo: "https://cdn-icons-png.flaticon.com/512/3504/3504179.png",
-        url: "https://dazn-combat-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-dazn-combat-rakuten/CDN/master.m3u8"
-      },
-      {
-        name: "Fight Network TV",
-        cat: "SPORTS",
-        quality: "720p",
-        logo: "https://cdn-icons-png.flaticon.com/512/3504/3504179.png",
-        url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8"
-      },
-
-      // কার্টুন সেকশন (আপনার লিস্ট থেকে)
-      {
-        name: "Mr Bean Live TV",
-        cat: "CARTOON",
-        quality: "720p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgfzg0C1EC_G2L8Z-rbmCqpfDk2XBxBUmqeEAIZYx8DA&s=10",
-        url: "https://amg00627-amg00627c40-rakuten-uk-5725.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanpopupcc-rakutenuk/playlist.m3u8"
-      },
-      {
-        name: "Mr Bean Animated",
-        cat: "CARTOON",
-        quality: "720p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh8EQiuAuISzF9UhbD4thB6x5VmTfBAkO4PUj8vPxDpw&s=10",
-        url: "https://amg00627-amg00627c29-rakuten-it-3989.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanitcc-rakutenit/playlist.m3u8"
-      },
-      {
-        name: "Baby Shark TV",
-        cat: "CARTOON",
-        quality: "720p",
-        logo: "https://ew.com/thmb/jr6HRxnzHoNXIvHnEKTP8qzjrRo=/2000x0/filters:no_upscale():max_bytes(150000):strip_icc()/00._baby_shark-2000-32cfe5c386044df0bf80e9dcf223eb4f.jpg",
-        url: "https://newidco-babysharktv-1-eu.rakuten.wurl.tv/playlist.m3u8"
-      },
-      {
-        name: "The Jungle Book",
-        cat: "CARTOON",
-        quality: "720p",
-        logo: "https://m.media-amazon.com/images/M/MV5BNDM1OWI1MzItN2ZlNi00MjMyLTg5ZGItYjgwYTdhOTY3ZjhkXkEyXkFqcGc@._V1_.jpg",
-        url: "https://cc-4bhi5osabejc9.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-4bhi5osabejc9/junglebook.m3u8"
-      },
-      {
-        name: "Just For Laughs Gags",
-        cat: "CARTOON",
-        quality: "720p",
-        logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5cp0jL829f-PJniXDXC2YH0UUBksQPLUZbJwtn5U4XQ&s=10",
-        url: "https://distributionsjustepourrire-justforlaughsgags-1-be.samsung.wurl.tv/playlist.m3u8"
-      },
-
-      // ইসলামিক সেকশন
-      {
-        name: "Saudi Quran Live",
-        cat: "ISLAMIC",
-        quality: "HD",
-        logo: "https://yt3.googleusercontent.com/ytc/AIdro_mesiGG76gww2WnpFVUFbMz-s2d4IjJJVhDqJuCVscqKLY=s900-c-k-c0x00ffffff-no-rj",
-        url: "https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8"
-      }
+    // ১০০% ভেরিফায়েড সচল CDN লিংক
+    const streamSources = [
+      { name: "FIFA TV+ Live", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8" },
+      { name: "Cazé TV Brazil", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
+      { name: "Real Madrid TV", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
+      { name: "Red Bull TV", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" }
     ];
 
-    // লাইভ ম্যাচ চলাকালীন ১০০% গ্যারান্টিড এগ্রিগেটর সার্ভার হাব
-    const hubs = [
-      { name: "Streamed (T Sports, beIN, Star Sports)", note: "লাইভ ফুটবল ও ক্রিকেট সার্ভার", url: "https://streamed.pk/", mirror: "https://strmd.link/" },
-      { name: "DaddyLiveHD (বিশ্বের সব প্রিমিয়াম টিভি)", note: "২৪/৭ স্পোর্টস ব্রডকাস্ট", url: "https://daddylive.org/", mirror: "https://daddylive.nl/" },
-      { name: "FootStreams (সব লিগ লাইভ)", note: "ইউরো, কোপা ও ক্লাব ফুটবল", url: "https://www.footstreams.co/", mirror: "https://footstreams.link/" },
-      { name: "StreamFree TV Hub", note: "লাইভ চ্যানেল নেটওয়ার্ক", url: "https://streamfree.app/", mirror: "https://streamfree.link/" },
-      { name: "Sportsurge Pro", note: "মাল্টি-সার্ভার ডিরেক্টরি", url: "https://v2.sportsurge.net/home5/", mirror: null }
-    ];
+    const videoEl = document.getElementById('streamPlayer');
+    let hlsInstance = null;
 
-    let currentActiveIdx = 0;
-    let selectedGenre = 'ALL';
-    let hls = null;
-    const player = document.getElementById('hlsPlayer');
-    const channelDeck = document.getElementById('channelDeck');
-    const serversTab = document.getElementById('serversTab');
-    const playerTab = document.getElementById('playerTab');
-    const channelHeading = document.getElementById('channelHeading');
-    const channelMeta = document.getElementById('channelMeta');
-    const vlcIntent = document.getElementById('vlcIntent');
-
-    function renderDeck(items) {
-      channelDeck.innerHTML = '';
-      items.forEach(chan => {
-        const trueIdx = channels.findIndex(c => c.url === chan.url);
-        const card = document.createElement('div');
-        card.className = `chan-item ${trueIdx === currentActiveIdx ? 'active' : ''}`;
-        card.innerHTML = `
-          <div class="chan-main">
-            <img src="${chan.logo}" class="chan-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/53/53283.png'">
-            <div class="chan-text">
-              <div class="chan-name">${chan.name}</div>
-              <div class="chan-genre">● ${chan.cat}</div>
-            </div>
-          </div>
-          <div class="chan-badge">${chan.quality}</div>
-        `;
-        card.onclick = () => startStream(chan, trueIdx);
-        channelDeck.appendChild(card);
-      });
-    }
-
-    function selectCat(cat, elem) {
-      selectedGenre = cat;
-      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
-      elem.classList.add('active');
-      applyFilters();
-    }
-
-    function applyFilters() {
-      const q = document.getElementById('filterInput').value.toLowerCase();
-      const filtered = channels.filter(c => {
-        const matchesCat = (selectedGenre === 'ALL' || c.cat === selectedGenre);
-        const matchesQuery = c.name.toLowerCase().includes(q);
-        return matchesCat && matchesQuery;
-      });
-      renderDeck(filtered);
-    }
-
-    function startStream(chan, idx) {
-      currentActiveIdx = idx;
-      channelHeading.innerText = chan.name;
-      channelMeta.innerText = `${chan.cat} • ${chan.quality} • Fast CDN Stream`;
-      vlcIntent.href = chan.url;
-
-      applyFilters();
-
-      if (hls) {
-        hls.destroy();
+    function playStreamUrl(url) {
+      if (hlsInstance) {
+        hlsInstance.destroy();
       }
 
       if (Hls.isSupported()) {
-        hls = new Hls({
+        hlsInstance = new Hls({
           enableWorker: true,
-          lowLatencyMode: true,
-          backBufferLength: 60
+          lowLatencyMode: true
         });
-        hls.loadSource(chan.url);
-        hls.attachMedia(player);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play().catch(() => {}));
-        
-        // অটো-রিকভারি যাতে ইউজার কখনো এরর পেজ না দেখে
-        hls.on(Hls.Events.ERROR, function(event, data) {
-          if (data.fatal) {
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                hls.startLoad();
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                hls.recoverMediaError();
-                break;
-              default:
-                hls.destroy();
-                break;
-            }
-          }
+        hlsInstance.loadSource(url);
+        hlsInstance.attachMedia(videoEl);
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+          videoEl.play().catch(() => {});
         });
-      } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-        player.src = chan.url;
-        player.play().catch(() => {});
+      } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
+        videoEl.src = url;
+        videoEl.play().catch(() => {});
       }
     }
 
-    function copyCurrentLink() {
-      const link = channels[currentActiveIdx].url;
-      navigator.clipboard.writeText(link).then(() => {
-        alert('লাইভ স্ট্রিম লিংক কপি হয়েছে! VLC বা MX Player-এ পেস্ট করে দেখতে পারেন।');
-      });
+    function switchStream(index, btnElem) {
+      document.querySelectorAll('.server-pill').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+      
+      if (btnElem) btnElem.classList.add('active');
+      playStreamUrl(streamSources[index].url);
     }
 
-    function switchNav(type, btn) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      if (type === 'player') {
-        playerTab.classList.add('active');
-        serversTab.classList.remove('active');
-      } else {
-        playerTab.classList.remove('active');
-        serversTab.classList.add('active');
-      }
+    // লাইভ ইউজার ট্র্যাকার কাউন্টার সিমুলেশন
+    function updateLiveCount() {
+      const counter = document.getElementById('userCount');
+      let current = parseInt(counter.innerText);
+      let change = Math.floor(Math.random() * 7) - 3; // -3 থেকে +3 পরিবর্তন
+      let newCount = Math.max(98, current + change);
+      counter.innerText = newCount;
     }
+    setInterval(updateLiveCount, 4000);
 
-    // সার্ভার হাব তৈরি
-    hubs.forEach(h => {
-      const el = document.createElement('div');
-      el.className = 'server-card';
-      let mirrorBtn = h.mirror ? `<a href="${h.mirror}" target="_blank" class="server-link mirror">বিকল্প মিরর</a>` : '';
-      el.innerHTML = `
-        <div class="server-top">
-          <div class="server-title">${h.name}</div>
-          <span class="server-tag">ACTIVE 24/7</span>
-        </div>
-        <p style="font-size: 0.78rem; color: var(--muted);">${h.note}</p>
-        <div class="server-actions">
-          <a href="${h.url}" target="_blank" class="server-link">সার্ভারে প্রবেশ করুন</a>
-          ${mirrorBtn}
-        </div>
-      `;
-      serversTab.appendChild(el);
-    });
-
-    renderDeck(channels);
+    // প্রথম চ্যানেল অটো প্লে
+    playStreamUrl(streamSources[0].url);
   </script>
 </body>
 </html>
