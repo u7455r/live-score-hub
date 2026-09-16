@@ -470,8 +470,8 @@
       <button class="install-app-btn" id="pwaInstallBtn" onclick="installApp()">
         📲 App Download
       </button>
-      <!-- ডিরেক্ট লিঙ্ক অ্যাড সংযুক্ত VIP বাটন -->
-      <a href="https://omg10.com/4/11813066" target="_blank" class="vip-btn">
+      <!-- Adsterra Smartlink সেট করা VIP বাটন -->
+      <a href="https://www.profitableratecpmnetwork.com/imem39b5ci?key=af760d1ac73fb1da6c82bae1534a07ea" target="_blank" class="vip-btn">
         👑 VIP
       </a>
     </div>
@@ -505,14 +505,15 @@
   </main>
 
   <script>
-    const MONETAG_DIRECT_URL = "https://omg10.com/4/11813066";
+    // Adsterra Smartlink
+    const ADSTERRA_DIRECT_URL = "https://www.profitableratecpmnetwork.com/imem39b5ci?key=af760d1ac73fb1da6c82bae1534a07ea";
 
-    // স্মার্ট অ্যাড ট্রিগার (চ্যানেল পরিবর্তনের সময় স্বাভাবিক বিরতিতে অ্যাড প্রদর্শন)
+    // স্মার্ট অ্যাড ট্রিগার (প্রতি ২টি চ্যানেল ক্লিকের পর নতুন ট্যাবে ব্যাকগ্রাউন্ড অ্যাড লোড হবে)
     let adTriggerCount = 0;
-    function triggerMonetagAd() {
+    function triggerAd() {
       adTriggerCount++;
       if (adTriggerCount % 2 === 0) {
-        window.open(MONETAG_DIRECT_URL, '_blank');
+        window.open(ADSTERRA_DIRECT_URL, '_blank');
       }
     }
 
@@ -610,7 +611,7 @@
         btn.className = `server-pill ${idx === activeIndex ? 'active' : ''}`;
         btn.innerHTML = `<span class="tag-hd">${s.tag}</span> ${s.name.split(' ')[0]}`;
         btn.onclick = () => {
-          triggerMonetagAd();
+          triggerAd();
           playStream(idx);
         };
         pillsBar.appendChild(btn);
@@ -634,7 +635,7 @@
           <span class="tag-hd">LIVE</span>
         `;
         card.onclick = () => {
-          triggerMonetagAd();
+          triggerAd();
           playStream(idx);
         };
         channelsList.appendChild(card);
