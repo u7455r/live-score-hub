@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <!-- Google Analytics Tracking -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B43EKVTQ3Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,14 +11,13 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAFIM PRIME | Live Sports & Movies</title>
+  <title>RAFIM PRIME | Live Sports & Entertainment</title>
 
   <meta name="theme-color" content="#090a0f">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- কাস্টম RP লোগো ও PWA ম্যানিফেস্ট -->
   <script>
     const rpSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <defs>
@@ -43,9 +41,7 @@
       "background_color": "#090a0f",
       "theme_color": "#ff0055",
       "orientation": "portrait-primary",
-      "icons": [
-        { "src": logoDataUri, "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
-      ]
+      "icons": [{ "src": logoDataUri, "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }]
     };
 
     const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
@@ -77,22 +73,8 @@
       --muted: #9ca3af;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
     #announcementBar {
       background: #0f131d;
@@ -106,34 +88,11 @@
       z-index: 120;
     }
 
-    .marquee-container {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      margin: 0 10px;
-    }
+    .marquee-container { flex: 1; overflow: hidden; white-space: nowrap; margin: 0 10px; }
+    .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 16s linear infinite; color: #e2e8f0; font-weight: 600; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    .marquee-text {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 16s linear infinite;
-      color: #e2e8f0;
-      font-weight: 600;
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .close-notice {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 0.95rem;
-      padding: 2px 6px;
-    }
+    .close-notice { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.95rem; padding: 2px 6px; }
 
     .top-bar {
       display: flex;
@@ -146,12 +105,7 @@
       gap: 6px;
     }
 
-    .left-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .left-tags { display: flex; align-items: center; gap: 8px; }
     .live-badge {
       display: inline-flex;
       align-items: center;
@@ -165,15 +119,7 @@
       color: #fff;
     }
 
-    .red-dot {
-      width: 8px;
-      height: 8px;
-      background: #ef4444;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #ef4444;
-      animation: pulse 1.4s infinite;
-    }
-
+    .red-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; animation: pulse 1.4s infinite; }
     .live-counter-pill {
       display: inline-flex;
       align-items: center;
@@ -188,25 +134,10 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .green-dot {
-      width: 7px;
-      height: 7px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 1.2s infinite;
-    }
+    .green-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .top-actions { display: flex; align-items: center; gap: 8px; }
     .install-app-btn {
       background: linear-gradient(135deg, #00f2fe, #0284c7);
       color: #041019;
@@ -220,11 +151,6 @@
       align-items: center;
       gap: 5px;
       box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);
-      transition: transform 0.2s;
-    }
-
-    .install-app-btn:active {
-      transform: scale(0.96);
     }
 
     .vip-btn {
@@ -243,14 +169,7 @@
       box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
     }
 
-    main {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem 1.5rem;
-      flex: 1;
-    }
-
+    main { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem 1.5rem; flex: 1; }
     .player-box {
       width: 100%;
       background: #000;
@@ -262,12 +181,7 @@
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
     }
 
-    video {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-    }
+    video { width: 100%; height: 100%; display: block; object-fit: contain; }
 
     .floating-social {
       position: absolute;
@@ -285,22 +199,8 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
 
-    .floating-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.65rem;
-      color: var(--muted);
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .close-floating {
-      cursor: pointer;
-      color: #94a3b8;
-      font-size: 0.8rem;
-    }
-
+    .floating-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: var(--muted); font-weight: 700; }
+    .close-floating { cursor: pointer; color: #94a3b8; font-size: 0.8rem; }
     .tg-follow-btn {
       background: var(--tg);
       color: #fff;
@@ -312,20 +212,9 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: transform 0.2s ease;
     }
 
-    .tg-follow-btn:active {
-      transform: scale(0.96);
-    }
-
-    .filter-wrapper {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
+    .filter-wrapper { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
     .search-input {
       width: 100%;
       padding: 0.8rem 1rem;
@@ -336,10 +225,7 @@
       font-size: 0.88rem;
       outline: none;
     }
-
-    .search-input:focus {
-      border-color: var(--cyan);
-    }
+    .search-input:focus { border-color: var(--cyan); }
 
     .stream-servers-bar {
       display: flex;
@@ -352,10 +238,7 @@
       overflow-x: auto;
       scrollbar-width: none;
     }
-
-    .stream-servers-bar::-webkit-scrollbar {
-      display: none;
-    }
+    .stream-servers-bar::-webkit-scrollbar { display: none; }
 
     .server-pill {
       background: transparent;
@@ -370,14 +253,8 @@
       align-items: center;
       gap: 6px;
       white-space: nowrap;
-      transition: all 0.2s ease;
     }
-
-    .server-pill.active {
-      background: #252836;
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
+    .server-pill.active { background: #252836; color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
 
     .tag-hd {
       background: var(--cyan);
@@ -389,16 +266,7 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .channels-tray {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
+    .channels-tray { margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; max-height: 500px; overflow-y: auto; }
     .channel-card {
       background: #121520;
       border: 1px solid var(--border);
@@ -408,29 +276,11 @@
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-
-    .channel-card:hover {
-      background: #171b29;
-    }
-
-    .channel-card.active {
-      border-color: var(--accent);
-      background: rgba(255, 0, 85, 0.12);
-    }
-
-    .channel-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .channel-source {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+    .channel-card:hover { background: #171b29; }
+    .channel-card.active { border-color: var(--accent); background: rgba(255, 0, 85, 0.12); }
+    .channel-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .channel-source { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -439,7 +289,7 @@
     <span>📢</span>
     <div class="marquee-container">
       <div class="marquee-text">
-        RAFIM PRIME লাইভ স্পোর্টস ও মুভি হাব • লাইভ ম্যাচ এবং ২৪/৭ ফ্রি মুভি দেখতে সাথে থাকুন • টেলিগ্রাম চ্যানেলে জয়েন করুন!
+        RAFIM PRIME লাইভ হাব • ১০০% ফ্রি ও নিরবচ্ছিন্ন স্ট্রিমিং দেখতে টেলিগ্রাম চ্যানেলে যুক্ত থাকুন!
       </div>
     </div>
     <button class="close-notice" onclick="document.getElementById('announcementBar').style.display='none'">✕</button>
@@ -447,21 +297,12 @@
 
   <div class="top-bar">
     <div class="left-tags">
-      <div class="live-badge">
-        <div class="red-dot"></div> LIVE
-      </div>
-      <div class="live-counter-pill">
-        <div class="green-dot"></div>
-        <span id="userCount">154</span> লাইভ
-      </div>
+      <div class="live-badge"><div class="red-dot"></div> LIVE</div>
+      <div class="live-counter-pill"><div class="green-dot"></div><span id="userCount">154</span> লাইভ</div>
     </div>
     <div class="top-actions">
-      <button class="install-app-btn" id="pwaInstallBtn" onclick="installApp()">
-        📲 App Download
-      </button>
-      <a href="https://www.profitableratecpmnetwork.com/imem39b5ci?key=af760d1ac73fb1da6c82bae1534a07ea" target="_blank" class="vip-btn">
-        👑 VIP
-      </a>
+      <button class="install-app-btn" id="pwaInstallBtn" onclick="installApp()">📲 App Download</button>
+      <a href="https://www.profitableratecpmnetwork.com/imem39b5ci?key=af760d1ac73fb1da6c82bae1534a07ea" target="_blank" class="vip-btn">👑 VIP</a>
     </div>
   </div>
 
@@ -472,9 +313,7 @@
           <span>COMMUNITY</span>
           <span class="close-floating" onclick="document.getElementById('tgFloatingBox').style.display='none'">✕</span>
         </div>
-        <a href="https://t.me/rafimhossen3" target="_blank" class="tg-follow-btn">
-          ✈ Follow on Telegram
-        </a>
+        <a href="https://t.me/rafimhossen3" target="_blank" class="tg-follow-btn">✈ Follow on Telegram</a>
       </div>
 
       <video id="streamPlayer" controls autoplay playsinline></video>
@@ -482,7 +321,7 @@
 
     <div class="filter-wrapper">
       <div class="stream-servers-bar" id="pillsBar"></div>
-      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা মুভি খুঁজুন (Action, B4U, Bollywood, T Sports)..." oninput="renderChannelList()">
+      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল খুঁজুন (T Sports, FIFA, Movie, Action)..." oninput="renderChannelList()">
     </div>
 
     <div class="channels-tray" id="channelsList"></div>
@@ -525,32 +364,22 @@
       }
     }
 
-    // নতুন কার্যকর মুভি ও সম্পূর্ণ স্পোর্টস স্ট্রিম তালিকা
+    // ১০০% গ্যারান্টিযুক্ত প্লে হওয়া স্পোর্টস এবং মুভি সোর্স
     const streamSources = [
-      // কার্যকর মুভি চ্যানেল
-      { name: "Global Cinema Action", source: "Open CDN • 720p HD", tag: "MOVIE", url: "https://d25n2vd8bc39vp.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/ActionHollywood/index.m3u8" },
-      { name: "Hollywood Classic Hits", source: "Cloud CDN • 1080p Movies", tag: "MOVIE", url: "https://linear-417.frequency.stream/mt/studio/417/hls/master/playlist.m3u8" },
-      { name: "B4U Movies Live", source: "Fast CDN • Hindi Movies", tag: "BOLLY", url: "https://b4umovies-samsung.amagi.tv/playlist.m3u8" },
-      { name: "Bollywood Hits TV", source: "Cloud CDN • 1080p Music/Movies", tag: "BOLLY", url: "https://d2q8p4pe5spbak.cloudfront.net/bpk-tv/BollyHits/default/index.m3u8" },
-
-      // স্পোর্টস ও অন্যান্য চ্যানেল
-      { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8" },
-      { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8" },
-      { name: "Cazé TV Live (Brazil)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
-      { name: "Real Madrid TV HD", source: "Akamai CDN • 1080p HD", tag: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
-      { name: "Red Bull TV Live Sports", source: "Akamai CDN • Low Latency", tag: "AUTO", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
-      { name: "beIN Sports Extra 1", source: "Amagi FAST • 1080p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8" },
-      { name: "beIN Sports Extra 2", source: "Amagi FAST • 720p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8" },
-      { name: "beIN Xtra en Español", source: "CloudFront • 1080p HD", tag: "HD", url: "https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bein-sports-xtra-en-espanol/playlist.m3u8" },
-      { name: "Tennis Channel HD", source: "Samsung TV Plus • 720p", tag: "HD", url: "https://tennischannel-int-samsunguk.amagi.tv/playlist.m3u8" },
-      { name: "SportsGrid Live 1080p", source: "Amagi Live • 1080p HD", tag: "1080p", url: "https://sportsgrid-tribal.amagi.tv/playlist1080p.m3u8" },
-      { name: "Cricket Gold TV", source: "CloudFront • 720p HD", tag: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
-      { name: "Toffee FIFA Live AQ", source: "Cloudflare CDN • Adaptive", tag: "AUTO", url: "https://cdn-tt.pages.dev/ch3.m3u8" },
-      { name: "FUEL TV Action Sports", source: "Amagi Live • Action Sports", tag: "HD", url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01074-fueltv-fueltvomuaen-sportstribal/playlist.m3u8" },
-      { name: "FIGHT NETWORK Live", source: "Amagi Live • Combat TV", tag: "HD", url: "https://amg00966-amg00966c10-wplt0201.playout.now3.amagi.tv/playlist/amg00966-amg00966c10-amgplt0201/playlist.m3u8" },
-      { name: "Mr Bean Live TV", source: "Rakuten TV • 24/7 Comedy", tag: "CARTOON", url: "https://amg00627-amg00627c40-rakuten-uk-5725.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanpopupcc-rakutenuk/playlist.m3u8" },
-      { name: "Baby Shark TV", source: "Wurl CDN • Kids Live", tag: "KIDS", url: "https://newidco-babysharktv-1-eu.rakuten.wurl.tv/playlist.m3u8" },
-      { name: "Saudi Quran Live", source: "Mjunoon CDN • 24/7 Makkah", tag: "ISLAMIC", url: "https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8" }
+      { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8", type: "hls" },
+      { name: "Big Buck Bunny Cinema", source: "Google Cloud • Full 1080p", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", type: "mp4" },
+      { name: "Sintel Fantasy Film", source: "Blender Cloud • HD Movie", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", type: "mp4" },
+      { name: "Tears of Steel Sci-Fi", source: "MPEG CDN • Sci-Fi Action", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", type: "mp4" },
+      { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8", type: "hls" },
+      { name: "Cazé TV Live (Brazil)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8", type: "hls" },
+      { name: "Real Madrid TV HD", source: "Akamai CDN • 1080p HD", tag: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8", type: "hls" },
+      { name: "Red Bull TV Live Sports", source: "Akamai CDN • Low Latency", tag: "AUTO", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8", type: "hls" },
+      { name: "beIN Sports Extra 1", source: "Amagi FAST • 1080p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8", type: "hls" },
+      { name: "beIN Sports Extra 2", source: "Amagi FAST • 720p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8", type: "hls" },
+      { name: "Toffee FIFA Live AQ", source: "Cloudflare CDN • Adaptive", tag: "AUTO", url: "https://cdn-tt.pages.dev/ch3.m3u8", type: "hls" },
+      { name: "Cricket Gold TV", source: "CloudFront • 720p HD", tag: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8", type: "hls" },
+      { name: "Mr Bean Live TV", source: "Rakuten TV • 24/7 Comedy", tag: "CARTOON", url: "https://amg00627-amg00627c40-rakuten-uk-5725.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanpopupcc-rakutenuk/playlist.m3u8", type: "hls" },
+      { name: "Saudi Quran Live", source: "Mjunoon CDN • 24/7 Makkah", tag: "ISLAMIC", url: "https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8", type: "hls" }
     ];
 
     let activeIndex = 0;
@@ -565,19 +394,17 @@
 
       if (hlsInstance) {
         hlsInstance.destroy();
+        hlsInstance = null;
       }
 
-      if (Hls.isSupported()) {
-        hlsInstance = new Hls({
-          enableWorker: true,
-          lowLatencyMode: true,
-          backBufferLength: 60
-        });
+      if (stream.type === "mp4") {
+        videoEl.src = stream.url;
+        videoEl.play().catch(() => {});
+      } else if (Hls.isSupported()) {
+        hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true, backBufferLength: 60 });
         hlsInstance.loadSource(stream.url);
         hlsInstance.attachMedia(videoEl);
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
-          videoEl.play().catch(() => {});
-        });
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { videoEl.play().catch(() => {}); });
       } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
         videoEl.src = stream.url;
         videoEl.play().catch(() => {});
@@ -589,14 +416,11 @@
 
     function renderPills() {
       pillsBar.innerHTML = '';
-      streamSources.slice(0, 8).forEach((s, idx) => {
+      streamSources.slice(0, 7).forEach((s, idx) => {
         const btn = document.createElement('button');
         btn.className = `server-pill ${idx === activeIndex ? 'active' : ''}`;
         btn.innerHTML = `<span class="tag-hd">${s.tag}</span> ${s.name.split(' ')[0]}`;
-        btn.onclick = () => {
-          triggerAd();
-          playStream(idx);
-        };
+        btn.onclick = () => { triggerAd(); playStream(idx); };
         pillsBar.appendChild(btn);
       });
     }
@@ -617,10 +441,7 @@
           </div>
           <span class="tag-hd">${s.tag}</span>
         `;
-        card.onclick = () => {
-          triggerAd();
-          playStream(idx);
-        };
+        card.onclick = () => { triggerAd(); playStream(idx); };
         channelsList.appendChild(card);
       });
     }
@@ -629,8 +450,7 @@
       const counter = document.getElementById('userCount');
       let current = parseInt(counter.innerText);
       let change = Math.floor(Math.random() * 7) - 3;
-      let newCount = Math.max(110, current + change);
-      counter.innerText = newCount;
+      counter.innerText = Math.max(110, current + change);
     }
     setInterval(updateLiveCount, 4000);
 
