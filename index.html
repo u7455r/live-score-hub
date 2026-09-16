@@ -482,7 +482,7 @@
 
     <div class="filter-wrapper">
       <div class="stream-servers-bar" id="pillsBar"></div>
-      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা মুভি খুঁজুন (Cinema, Action, Bollywood, T Sports)..." oninput="renderChannelList()">
+      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা মুভি খুঁজুন (Action, B4U, Bollywood, T Sports)..." oninput="renderChannelList()">
     </div>
 
     <div class="channels-tray" id="channelsList"></div>
@@ -525,14 +525,15 @@
       }
     }
 
+    // নতুন কার্যকর মুভি ও সম্পূর্ণ স্পোর্টস স্ট্রিম তালিকা
     const streamSources = [
-      // মুভি চ্যানেল
-      { name: "Action Cinema 24/7 HD", source: "Rakuten FAST CDN • 1080p Movies", tag: "MOVIE", url: "https://rakuten-actionmovies-1-gb.samsung.wurl.tv/playlist.m3u8" },
-      { name: "Sci-Fi & Thriller Hub", source: "CloudFront CDN • 1080p Movies", tag: "MOVIE", url: "https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/dust-samsunguk/playlist.m3u8" },
-      { name: "Bollywood Hits & Cinema", source: "Cloud CDN • 1080p Bolly", tag: "BOLLY", url: "https://d2q8p4pe5spbak.cloudfront.net/bpk-tv/BollyHits/default/index.m3u8" },
-      { name: "Classic Cinema Gold", source: "Samsung TV CDN • 720p Cinema", tag: "CINEMA", url: "https://fls-classiccinema.samsung.wurl.tv/playlist.m3u8" },
-      
-      // স্পোর্টস চ্যানেল
+      // কার্যকর মুভি চ্যানেল
+      { name: "Global Cinema Action", source: "Open CDN • 720p HD", tag: "MOVIE", url: "https://d25n2vd8bc39vp.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/ActionHollywood/index.m3u8" },
+      { name: "Hollywood Classic Hits", source: "Cloud CDN • 1080p Movies", tag: "MOVIE", url: "https://linear-417.frequency.stream/mt/studio/417/hls/master/playlist.m3u8" },
+      { name: "B4U Movies Live", source: "Fast CDN • Hindi Movies", tag: "BOLLY", url: "https://b4umovies-samsung.amagi.tv/playlist.m3u8" },
+      { name: "Bollywood Hits TV", source: "Cloud CDN • 1080p Music/Movies", tag: "BOLLY", url: "https://d2q8p4pe5spbak.cloudfront.net/bpk-tv/BollyHits/default/index.m3u8" },
+
+      // স্পোর্টস ও অন্যান্য চ্যানেল
       { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8" },
       { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8" },
       { name: "Cazé TV Live (Brazil)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
@@ -638,4 +639,4 @@
     playStream(0);
   </script>
 </body>
-</html>
+  </html>
