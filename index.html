@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+  <!-- Google Analytics Tracking -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B43EKVTQ3Z"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,13 +12,14 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAFIM PRIME | Live Sports & Entertainment</title>
+  <title>RAFIM PRIME | Live Sports & Movies</title>
 
   <meta name="theme-color" content="#090a0f">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <!-- কাস্টম RP লোগো ও PWA ম্যানিফেস্ট -->
   <script>
     const rpSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <defs>
@@ -289,7 +291,7 @@
     <span>📢</span>
     <div class="marquee-container">
       <div class="marquee-text">
-        RAFIM PRIME লাইভ হাব • ১০০% ফ্রি ও নিরবচ্ছিন্ন স্ট্রিমিং দেখতে টেলিগ্রাম চ্যানেলে যুক্ত থাকুন!
+        RAFIM PRIME লাইভ হাব • ১০০% ফ্রি স্পোর্টস ও মুভি দেখতে সাথে থাকুন • টেলিগ্রাম চ্যানেলে জয়েন করুন!
       </div>
     </div>
     <button class="close-notice" onclick="document.getElementById('announcementBar').style.display='none'">✕</button>
@@ -321,7 +323,7 @@
 
     <div class="filter-wrapper">
       <div class="stream-servers-bar" id="pillsBar"></div>
-      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল খুঁজুন (T Sports, FIFA, Movie, Action)..." oninput="renderChannelList()">
+      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা মুভি খুঁজুন (Filmzie, Action, T Sports, FIFA)..." oninput="renderChannelList()">
     </div>
 
     <div class="channels-tray" id="channelsList"></div>
@@ -364,12 +366,16 @@
       }
     }
 
-    // ১০০% গ্যারান্টিযুক্ত প্লে হওয়া স্পোর্টস এবং মুভি সোর্স
+    // ১০০% কার্যকরী লাইভ মুভি ও স্পোর্টস চ্যানেল তালিকা
     const streamSources = [
+      // লাইভ মুভি চ্যানেল
+      { name: "Filmzie Movies HD", source: "BroadStream • 1080p Movies", tag: "MOVIE", url: "https://origin.broadstream.to/live/hls/filmzie/live.m3u8", type: "hls" },
+      { name: "Action Cinema 24/7", source: "Frequency CDN • Action Film", tag: "MOVIE", url: "https://linear-417.frequency.stream/mt/studio/417/hls/master/playlist.m3u8", type: "hls" },
+      { name: "Comedy Movie Hits", source: "Frequency CDN • 720p Comedy", tag: "MOVIE", url: "https://linear-386.frequency.stream/mt/studio/386/hls/master/playlist.m3u8", type: "hls" },
+      { name: "Big Buck Bunny Cinema", source: "Google Cloud • Full 1080p", tag: "CINEMA", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", type: "mp4" },
+
+      // স্পোর্টস ও অন্যান্য লাইভ চ্যানেল
       { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8", type: "hls" },
-      { name: "Big Buck Bunny Cinema", source: "Google Cloud • Full 1080p", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", type: "mp4" },
-      { name: "Sintel Fantasy Film", source: "Blender Cloud • HD Movie", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", type: "mp4" },
-      { name: "Tears of Steel Sci-Fi", source: "MPEG CDN • Sci-Fi Action", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", type: "mp4" },
       { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8", type: "hls" },
       { name: "Cazé TV Live (Brazil)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8", type: "hls" },
       { name: "Real Madrid TV HD", source: "Akamai CDN • 1080p HD", tag: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8", type: "hls" },
@@ -416,7 +422,7 @@
 
     function renderPills() {
       pillsBar.innerHTML = '';
-      streamSources.slice(0, 7).forEach((s, idx) => {
+      streamSources.slice(0, 8).forEach((s, idx) => {
         const btn = document.createElement('button');
         btn.className = `server-pill ${idx === activeIndex ? 'active' : ''}`;
         btn.innerHTML = `<span class="tag-hd">${s.tag}</span> ${s.name.split(' ')[0]}`;
