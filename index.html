@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <!-- Monetag Verification & Ad Tag -->
-  <meta name="monetag" content="189ef26298ec199d429ebd8e7057f731">
-  <script src="https://quge5.com/88/tag.min.js" data-zone="281276" async data-cfasync="false"></script>
-
   <!-- Google Analytics Tracking -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B43EKVTQ3Z"></script>
   <script>
@@ -474,7 +470,8 @@
       <button class="install-app-btn" id="pwaInstallBtn" onclick="installApp()">
         📲 App Download
       </button>
-      <a href="https://t.me/rafimhossen3" target="_blank" class="vip-btn">
+      <!-- ডিরেক্ট লিঙ্ক অ্যাড সংযুক্ত VIP বাটন -->
+      <a href="https://omg10.com/4/11813066" target="_blank" class="vip-btn">
         👑 VIP
       </a>
     </div>
@@ -508,6 +505,17 @@
   </main>
 
   <script>
+    const MONETAG_DIRECT_URL = "https://omg10.com/4/11813066";
+
+    // স্মার্ট অ্যাড ট্রিগার (চ্যানেল পরিবর্তনের সময় স্বাভাবিক বিরতিতে অ্যাড প্রদর্শন)
+    let adTriggerCount = 0;
+    function triggerMonetagAd() {
+      adTriggerCount++;
+      if (adTriggerCount % 2 === 0) {
+        window.open(MONETAG_DIRECT_URL, '_blank');
+      }
+    }
+
     // PWA সার্ভিস ওয়ার্কার ক্যাশিং
     if ('serviceWorker' in navigator) {
       const swCode = `self.addEventListener('fetch', function(e) {});`;
@@ -601,7 +609,10 @@
         const btn = document.createElement('button');
         btn.className = `server-pill ${idx === activeIndex ? 'active' : ''}`;
         btn.innerHTML = `<span class="tag-hd">${s.tag}</span> ${s.name.split(' ')[0]}`;
-        btn.onclick = () => playStream(idx);
+        btn.onclick = () => {
+          triggerMonetagAd();
+          playStream(idx);
+        };
         pillsBar.appendChild(btn);
       });
     }
@@ -622,7 +633,10 @@
           </div>
           <span class="tag-hd">LIVE</span>
         `;
-        card.onclick = () => playStream(idx);
+        card.onclick = () => {
+          triggerMonetagAd();
+          playStream(idx);
+        };
         channelsList.appendChild(card);
       });
     }
