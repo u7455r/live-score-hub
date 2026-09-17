@@ -12,7 +12,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAFIM PRIME | Live Sports & Movies</title>
+  <title>RAFIM PRIME | Live Sports, Movies & Matches</title>
 
   <meta name="theme-color" content="#090a0f">
   <meta name="mobile-web-app-capable" content="yes">
@@ -65,11 +65,12 @@
   <style>
     :root {
       --bg: #090a0f;
-      --card: rgba(18, 20, 29, 0.75);
+      --card: #121520;
       --border: rgba(255, 255, 255, 0.08);
       --accent: #ff0055;
       --gold: #f59e0b;
       --cyan: #00f2fe;
+      --green: #25D366;
       --tg: #229ED9;
       --text: #f3f4f6;
       --muted: #9ca3af;
@@ -91,9 +92,8 @@
     }
 
     .marquee-container { flex: 1; overflow: hidden; white-space: nowrap; margin: 0 10px; }
-    .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 16s linear infinite; color: #e2e8f0; font-weight: 600; }
+    .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 18s linear infinite; color: #e2e8f0; font-weight: 600; }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
     .close-notice { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.95rem; padding: 2px 6px; }
 
     .top-bar {
@@ -185,6 +185,24 @@
 
     video { width: 100%; height: 100%; display: block; object-fit: contain; }
 
+    .unmute-overlay {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--accent);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      z-index: 15;
+      display: none;
+      box-shadow: 0 4px 16px rgba(255, 0, 85, 0.4);
+    }
+
     .floating-social {
       position: absolute;
       top: 14px;
@@ -214,6 +232,70 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* সোশ্যাল শেয়ার ও দ্রুত অ্যাকশন বার */
+    .action-share-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .share-btn:active { transform: scale(0.97); }
+    .btn-wa { background: var(--green); color: #000; }
+    .btn-tg { background: var(--tg); color: #fff; }
+
+    /* আজকের ম্যাচ ফিক্সচার বোর্ড */
+    .fixtures-box {
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .fixtures-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .fixture-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+    .fixture-item:last-child { border-bottom: none; }
+    .fixture-teams { font-weight: 700; color: #fff; }
+    .fixture-time {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--gold);
     }
 
     .filter-wrapper { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -291,7 +373,7 @@
     <span>📢</span>
     <div class="marquee-container">
       <div class="marquee-text">
-        RAFIM PRIME লাইভ হাব • ১০০% ফ্রি স্পোর্টস ও মুভি দেখতে সাথে থাকুন • টেলিগ্রাম চ্যানেলে জয়েন করুন!
+        RAFIM PRIME লাইভ • আজকের ক্রিকেট ও ফুটবল ম্যাচ ফুল এইচডিতে দেখুন • বন্ধুদের সাথে সাইটটি শেয়ার করুন!
       </div>
     </div>
     <button class="close-notice" onclick="document.getElementById('announcementBar').style.display='none'">✕</button>
@@ -318,12 +400,44 @@
         <a href="https://t.me/rafimhossen3" target="_blank" class="tg-follow-btn">✈ Follow on Telegram</a>
       </div>
 
-      <video id="streamPlayer" controls autoplay playsinline></video>
+      <button id="unmuteBtn" class="unmute-overlay" onclick="enableAudio()">🔊 শব্দ শুনতে ট্যাপ করুন (Unmute)</button>
+
+      <video id="streamPlayer" controls autoplay muted playsinline></video>
+    </div>
+
+    <!-- সোশ্যাল শেয়ার সেকশন -->
+    <div class="action-share-bar">
+      <button onclick="shareWhatsApp()" class="share-btn btn-wa">
+        💬 Share to WhatsApp
+      </button>
+      <button onclick="shareTelegram()" class="share-btn btn-tg">
+        ✈ Share to Telegram
+      </button>
+    </div>
+
+    <!-- আজকের ম্যাচ সময়সূচি ও ফিক্সচার -->
+    <div class="fixtures-box">
+      <div class="fixtures-header">
+        <span>⚽ আজকের লাইভ ম্যাচ শিডিউল</span>
+        <span style="font-size:0.75rem; color:var(--muted)">সময় (বাংলাদেশ)</span>
+      </div>
+      <div class="fixture-item">
+        <div class="fixture-teams">🏏 বাংলাদেশ বনাম ভারত (লাইভ)</div>
+        <div class="fixture-time">বিকেল ৩:০০ টা • T Sports</div>
+      </div>
+      <div class="fixture-item">
+        <div class="fixture-teams">⚽ রিয়াল মাদ্রিদ বনাম বার্সেলোনা</div>
+        <div class="fixture-time">রাত ১:০০ টা • Server 1</div>
+      </div>
+      <div class="fixture-item">
+        <div class="fixture-teams">🎬 হলিউড ব্লকবাস্টার মুভি স্ট্রিম</div>
+        <div class="fixture-time">২৪/৭ লাইভ • Movie Hub</div>
+      </div>
     </div>
 
     <div class="filter-wrapper">
       <div class="stream-servers-bar" id="pillsBar"></div>
-      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা মুভি খুঁজুন (Filmzie, Action, T Sports, FIFA)..." oninput="renderChannelList()">
+      <input type="text" id="searchBox" class="search-input" placeholder="🔍 চ্যানেল বা খেলা খুঁজুন (T Sports, FIFA, Movie, Server)..." oninput="renderChannelList()">
     </div>
 
     <div class="channels-tray" id="channelsList"></div>
@@ -338,6 +452,18 @@
       if (adTriggerCount % 2 === 0) {
         window.open(ADSTERRA_DIRECT_URL, '_blank');
       }
+    }
+
+    function shareWhatsApp() {
+      triggerAd();
+      const text = encodeURIComponent("🔥 ফুল এইচডিতে আজকের সব লাইভ খেলা ও মুভি একদম ফ্রিতে দেখুন এই লিংকে: " + window.location.href);
+      window.open("https://api.whatsapp.com/send?text=" + text, '_blank');
+    }
+
+    function shareTelegram() {
+      triggerAd();
+      const text = encodeURIComponent("🔥 লাইভ খেলা ও এইচডি সিনেমা দেখুন RAFIM PRIME-এ: " + window.location.href);
+      window.open("https://t.me/share/url?url=" + encodeURIComponent(window.location.href) + "&text=" + text, '_blank');
     }
 
     if ('serviceWorker' in navigator) {
@@ -366,33 +492,31 @@
       }
     }
 
-    // ১০০% কার্যকরী লাইভ মুভি ও স্পোর্টস চ্যানেল তালিকা
+    // ১০০% কোনো ব্লক ছাড়া সরাসরি ব্রাউজারে চলমান স্ট্রিম তালিকা
     const streamSources = [
-      // লাইভ মুভি চ্যানেল
-      { name: "Filmzie Movies HD", source: "BroadStream • 1080p Movies", tag: "MOVIE", url: "https://origin.broadstream.to/live/hls/filmzie/live.m3u8", type: "hls" },
-      { name: "Action Cinema 24/7", source: "Frequency CDN • Action Film", tag: "MOVIE", url: "https://linear-417.frequency.stream/mt/studio/417/hls/master/playlist.m3u8", type: "hls" },
-      { name: "Comedy Movie Hits", source: "Frequency CDN • 720p Comedy", tag: "MOVIE", url: "https://linear-386.frequency.stream/mt/studio/386/hls/master/playlist.m3u8", type: "hls" },
-      { name: "Big Buck Bunny Cinema", source: "Google Cloud • Full 1080p", tag: "CINEMA", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", type: "mp4" },
-
-      // স্পোর্টস ও অন্যান্য লাইভ চ্যানেল
-      { name: "T Sports Live HD", source: "AynaOTT CDN • 1080p Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8", type: "hls" },
-      { name: "FIFA TV+ Official HD", source: "Cloud CDN • 1080p FHD", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8", type: "hls" },
-      { name: "Cazé TV Live (Brazil)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8", type: "hls" },
-      { name: "Real Madrid TV HD", source: "Akamai CDN • 1080p HD", tag: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8", type: "hls" },
-      { name: "Red Bull TV Live Sports", source: "Akamai CDN • Low Latency", tag: "AUTO", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8", type: "hls" },
-      { name: "beIN Sports Extra 1", source: "Amagi FAST • 1080p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlist1080P.m3u8", type: "hls" },
-      { name: "beIN Sports Extra 2", source: "Amagi FAST • 720p HD", tag: "HD", url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8", type: "hls" },
-      { name: "Toffee FIFA Live AQ", source: "Cloudflare CDN • Adaptive", tag: "AUTO", url: "https://cdn-tt.pages.dev/ch3.m3u8", type: "hls" },
-      { name: "Cricket Gold TV", source: "CloudFront • 720p HD", tag: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8", type: "hls" },
-      { name: "Mr Bean Live TV", source: "Rakuten TV • 24/7 Comedy", tag: "CARTOON", url: "https://amg00627-amg00627c40-rakuten-uk-5725.playouts.now.amagi.tv/playlist/amg00627-banijayfast-mrbeanpopupcc-rakutenuk/playlist.m3u8", type: "hls" },
-      { name: "Saudi Quran Live", source: "Mjunoon CDN • 24/7 Makkah", tag: "ISLAMIC", url: "https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8", type: "hls" }
+      { name: "T Sports Live HD (Server 1)", source: "AynaOTT CDN • 1080p Cricket/Live", tag: "LIVE", url: "https://tvsen5.aynaott.com/TnMn5kZz8aLm/tracks-v1a1/mono.ts.m3u8" },
+      { name: "Toffee Live Sports (Server 2)", source: "Cloudflare CDN • Low Latency", tag: "LIVE", url: "https://cdn-tt.pages.dev/ch3.m3u8" },
+      { name: "FIFA TV+ Official FHD (Server 3)", source: "Cloud CDN • 1080p FHD Football", tag: "FHD", url: "https://a62dad94.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0ZJRkFQbHVzRW5nbGlzaF9ITFM/playlist.m3u8" },
+      { name: "Cazé TV Live (Brazil Sports)", source: "Amagi CDN • 1080p Live", tag: "FHD", url: "https://dfr80qzd35crc.cloudfront.net/UNOP/Amagi/Caze_TV_BR/1080p-vtt/index.m3u8" },
+      { name: "Real Madrid TV HD", source: "Akamai CDN • 1080p HD", tag: "1080p", url: "https://rmtv.akamaized.net/hls/live/2043153/rmtv-es-web/Bitrate_3.m3u8" },
+      { name: "Cricket Gold TV Live", source: "CloudFront • 720p HD", tag: "HD", url: "https://dlmjdu39jadcr0.cloudfront.net/v1/master/9d062541f2ff39b5c0f48b763ca611d25f62fc25/FLS-MuxIP-CricketGold/418.m3u8" },
+      { name: "Big Buck Bunny Movie (Cinema)", source: "Google Cloud • Full 1080p", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
+      { name: "Sintel Cinema Film (Action)", source: "Blender Cloud • HD Movie", tag: "MOVIE", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" },
+      { name: "Red Bull TV Live Sports", source: "Akamai CDN • Low Latency", tag: "AUTO", url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8" },
+      { name: "Saudi Quran Live", source: "Mjunoon CDN • 24/7 Makkah", tag: "ISLAMIC", url: "https://vodzong.mjunoon.tv:8087/streamtest/SaudiQuran-142/playlist.m3u8" }
     ];
 
     let activeIndex = 0;
     const videoEl = document.getElementById('streamPlayer');
     const pillsBar = document.getElementById('pillsBar');
     const channelsList = document.getElementById('channelsList');
+    const unmuteBtn = document.getElementById('unmuteBtn');
     let hlsInstance = null;
+
+    function enableAudio() {
+      videoEl.muted = false;
+      unmuteBtn.style.display = 'none';
+    }
 
     function playStream(index) {
       activeIndex = index;
@@ -403,14 +527,42 @@
         hlsInstance = null;
       }
 
-      if (stream.type === "mp4") {
+      videoEl.muted = true;
+      unmuteBtn.style.display = 'block';
+
+      if (stream.url.endsWith('.mp4')) {
         videoEl.src = stream.url;
+        videoEl.load();
         videoEl.play().catch(() => {});
       } else if (Hls.isSupported()) {
-        hlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true, backBufferLength: 60 });
+        hlsInstance = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          manifestLoadingTimeOut: 15000
+        });
+
         hlsInstance.loadSource(stream.url);
         hlsInstance.attachMedia(videoEl);
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { videoEl.play().catch(() => {}); });
+
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+          videoEl.play().catch(() => {});
+        });
+
+        hlsInstance.on(Hls.Events.ERROR, function(event, data) {
+          if (data.fatal) {
+            switch(data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                hlsInstance.startLoad();
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                hlsInstance.recoverMediaError();
+                break;
+              default:
+                hlsInstance.destroy();
+                break;
+            }
+          }
+        });
       } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
         videoEl.src = stream.url;
         videoEl.play().catch(() => {});
@@ -422,7 +574,7 @@
 
     function renderPills() {
       pillsBar.innerHTML = '';
-      streamSources.slice(0, 8).forEach((s, idx) => {
+      streamSources.slice(0, 6).forEach((s, idx) => {
         const btn = document.createElement('button');
         btn.className = `server-pill ${idx === activeIndex ? 'active' : ''}`;
         btn.innerHTML = `<span class="tag-hd">${s.tag}</span> ${s.name.split(' ')[0]}`;
@@ -462,7 +614,10 @@
 
     renderPills();
     renderChannelList();
-    playStream(0);
+    
+    window.addEventListener('DOMContentLoaded', () => {
+      playStream(0);
+    });
   </script>
 </body>
-  </html>
+</html>
